@@ -10,6 +10,6 @@ export async function sendEmail(user: User) {
   const clerkId = user.id;
   const emailAddress = user.emailAddresses[0].emailAddress;
 
-  console.log("Sending email to", emailAddress);
+  console.log("Sending email", emailAddress);
   console.log("Clerk ID is", clerkId);
 }
