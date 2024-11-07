@@ -1,11 +1,12 @@
 import { Protect, SignOutButton } from "@clerk/nextjs";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import DisplayUserOrgData from "../components/display-user-org-data";
+import { sendEmail } from "../actions/sendEmail";
 
 export default async function Dashboard() {
   const { userId } = await auth();
   const user = await currentUser();
-  const userStuff = user?.emailAddresses[0].emailAddress;
+  sendEmail(user as User);
 
   if (userId) {
     return (
@@ -34,7 +35,7 @@ export default async function Dashboard() {
           </div>
         </Protect>
         <pre>{JSON.stringify(user, null, 2)}</pre>;
-        <DisplayUserOrgData user={userStuff} />
+        <DisplayUserOrgData user={user} />
       </div>
     );
   }
