@@ -9,6 +9,7 @@ export default async function Dashboard() {
 
   const neonUser = clerkId ? await getCaluserData(clerkId) : null;
   console.log(neonUser);
+  console.log("clerk id is", clerkId);
 
   if (userId) {
     return (
