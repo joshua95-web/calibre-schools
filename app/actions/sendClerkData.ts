@@ -31,11 +31,8 @@ export async function sendClerkData(user: User) {
   console.log("Clerk ID is", clerkId);
 
   const sendClerkDataResult = await sql`
-  INSERT INTO "teacher"
-  SET "clerk_id" = ${clerkId},
-  "main_contact" = ${emailAddress},
-  "created_at" = ${createdAt},
-  "updated_at" = ${updatedAt}
+ INSERT INTO "teacher" ("clerk_id", "main_contact", "created_at", "updated_at")
+  VALUES (${clerkId}, ${emailAddress}, ${createdAt}, ${updatedAt})
   `;
 
   return sendClerkDataResult;
