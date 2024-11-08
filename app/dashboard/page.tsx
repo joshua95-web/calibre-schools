@@ -1,9 +1,14 @@
 import { Protect, SignOutButton } from "@clerk/nextjs";
 import { auth, currentUser } from "@clerk/nextjs/server";
+import { getCaluserData } from "../actions/getCaluserData";
 
 export default async function Dashboard() {
   const { userId } = await auth();
   const user = await currentUser();
+  const clerkId = user?.id;
+
+  const neonUser = clerkId ? await getCaluserData(clerkId) : null;
+  console.log(neonUser);
 
   if (userId) {
     return (
@@ -31,7 +36,14 @@ export default async function Dashboard() {
             <SignOutButton />
           </div>
         </Protect>
-        <pre>{JSON.stringify(user, null, 2)}</pre>;
+        <div>
+          Clerk data
+          <pre>{JSON.stringify(user, null, 2)}</pre>;
+        </div>
+        <div>
+          Neon data
+          <pre>{JSON.stringify(neonUser, null, 2)}</pre>
+        </div>
       </div>
     );
   }
