@@ -13,11 +13,12 @@ export async function sendClerkData(user: User) {
   const createdAt = new Date(createdAtEpoch).toISOString();
   const updatedAtEpoch = user.updatedAt;
   const updatedAt = new Date(updatedAtEpoch).toISOString();
+  const isVerified = user.emailAddresses[0].verification?.status === "verified";
 
   // Check they don't exist already otherwise don't send:
 
   const existingUser = await sql`
-  SELECT 1 FROM "teacher" WHERE "clerk_id" = ${clerkId} LIMIT 1
+  SELECT 1 FROM "caluser" WHERE "clerk_user_id" = ${clerkId} LIMIT 1
   `;
 
   if (existingUser.length > 0) {
@@ -29,10 +30,11 @@ export async function sendClerkData(user: User) {
 
   console.log("Email is", emailAddress);
   console.log("Clerk ID is", clerkId);
+  console.log("Email is verified", isVerified);
 
   const sendClerkDataResult = await sql`
- INSERT INTO "teacher" ("clerk_id", "main_contact", "created_at", "updated_at")
-  VALUES (${clerkId}, ${emailAddress}, ${createdAt}, ${updatedAt})
+ INSERT INTO "caluser" ("email", "clerk_user_id", "created_at", "updated_at")
+  VALUES (${emailAddress}, ${clerkId}, ${createdAt}, ${updatedAt})
   `;
 
   return sendClerkDataResult;
