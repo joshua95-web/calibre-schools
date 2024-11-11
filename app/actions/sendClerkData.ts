@@ -18,7 +18,7 @@ export async function sendClerkData(user: User) {
   // Check they don't exist already otherwise don't send:
 
   const existingUser = await sql`
-  SELECT 1 FROM "caluser" WHERE "clerk_user_id" = ${clerkId} LIMIT 1
+  SELECT 1 FROM "caluser" WHERE "clerk_user_id" = ${emailAddress} LIMIT 1
   `;
 
   if (existingUser.length > 0) {
