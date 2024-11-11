@@ -11,6 +11,17 @@ export default async function Dashboard() {
   console.log(neonUser);
   console.log("clerk id is", clerkId);
 
+  // Check if neonUser exists and has first_name and, if not, fill out a form
+  // include form data for creating an organisation as a school and adding that info to neon and clerk
+  if (!neonUser?.first_name) {
+    return (
+      <div>
+        <h1>We need some more information...</h1>
+        <form className="gap-x-2 sm:flex sm:items-center"></form>
+      </div>
+    );
+  }
+
   if (userId) {
     return (
       <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
