@@ -17,6 +17,8 @@ export async function sendClerkData(user: User) {
 
   // Check they don't exist already otherwise don't send:
 
+  // try ON CONFLICT and do something with that like update or ignore (check the API calibre for examples with creating users)
+
   const existingUser = await sql`
   SELECT 1 FROM "caluser" WHERE "clerk_user_id" = ${emailAddress} LIMIT 1
   `;
