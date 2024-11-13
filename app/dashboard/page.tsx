@@ -17,7 +17,23 @@ export default async function Dashboard() {
     return (
       <div>
         <h1>We need some more information...</h1>
-        <form className="gap-x-2 sm:flex sm:items-center"></form>
+        <form>
+          <div className="gap-x-2 sm:flex sm:items-center">
+            <input
+              type="hidden"
+              name="first_name"
+              value={neonUser?.first_name}
+            />
+          </div>
+        </form>
+        <div>
+          Neon data
+          <pre>{JSON.stringify(neonUser, null, 2)}</pre>
+        </div>
+        <div>
+          Clerk data
+          <pre>{JSON.stringify(user, null, 2)}</pre>;
+        </div>
       </div>
     );
   }
