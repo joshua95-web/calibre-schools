@@ -15,16 +15,23 @@ export default async function Dashboard() {
   // include form data for creating an organisation as a school and adding that info to neon and clerk
   if (!neonUser?.first_name) {
     return (
-      <div className="">
-        <div className="flex justify-center text-3xl font-extrabold ">
+      <div className="flex justify-center">
+        <div className=" text-3xl font-extrabold ">
           <h1>We need some more information...</h1>
           <form>
             <div className="gap-x-2 sm:flex sm:items-center">
+              {/* hidden inputs */}
+              <input type="text" name="prefix" value={neonUser?.prefix} />
               <input
-                type="hidden"
+                type="text"
                 name="first_name"
                 value={neonUser?.first_name}
               />
+              <input type="text" name="last_name" value={neonUser?.last_name} />
+              <input type="text" name="suffix" value={neonUser?.suffix} />
+              <input type="text" name="mobile" value={neonUser?.mobile} />
+              <input type="text" name="telephone" value={neonUser?.telephone} />
+              <input type="text" name="telephone" value={neonUser?.telephone} />
             </div>
           </form>
           <div className="flex justify-between"></div>
