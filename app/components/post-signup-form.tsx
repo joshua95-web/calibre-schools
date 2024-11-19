@@ -6,7 +6,25 @@ const handleChange = (e) => {
   console.log(e.target.value);
 };
 
-export default function PostSignupForm({ neonUser, user }) {
+interface PostSignupFormProps {
+  neonUser: {
+    first_name?: string;
+    last_name?: string;
+    prefix?: string;
+    mobile?: string;
+  };
+  user: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+}
+
+export default function PostSignupForm({
+  neonUser,
+  user,
+}: PostSignupFormProps) {
   return (
     <div>
       <div className=" text-3xl text-black font-extrabold ">

@@ -12,3 +12,4 @@ type InputProps = {
   onCheckboxChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSwitch?: (checked: boolean) => void;
 };
+

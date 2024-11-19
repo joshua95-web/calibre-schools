@@ -17,6 +17,7 @@ export default async function Dashboard() {
   if (!neonUser?.first_name) {
     return (
       <div>
+        <PostSignupForm neonUser={neonUser} clerkId={clerkId} />
         <div>
           Clerk data
           <pre>{JSON.stringify(user, null, 2)}</pre>;
