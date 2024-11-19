@@ -1,6 +1,7 @@
 import { Protect, SignOutButton } from "@clerk/nextjs";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { getCaluserData } from "../actions/getCaluserData";
+import PostSignupForm from "../components/post-signup-form";
 
 export default async function Dashboard() {
   const { userId } = await auth();
@@ -15,32 +16,14 @@ export default async function Dashboard() {
   // include form data for creating an organisation as a school and adding that info to neon and clerk
   if (!neonUser?.first_name) {
     return (
-      <div className="flex justify-center">
-        <div className=" text-3xl font-extrabold ">
-          <h1>We need some more information...</h1>
-          <form>
-            <div className="gap-x-2 sm:flex sm:items-center">
-              {/* hidden inputs */}
-              <input type="text" name="prefix" value={neonUser?.prefix} />
-              <input
-                type="text"
-                name="first_name"
-                value={neonUser?.first_name}
-              />
-              <input type="text" name="last_name" value={neonUser?.last_name} />
-              <input type="text" name="suffix" value={neonUser?.suffix} />
-              <input type="text" name="mobile" value={neonUser?.mobile} />
-              <input type="text" name="telephone" value={neonUser?.telephone} />
-              <input type="text" name="telephone" value={neonUser?.telephone} />
-            </div>
-          </form>
-          <div className="flex justify-between"></div>
-        </div>
-        Neon data
-        <pre>{JSON.stringify(neonUser, null, 2)}</pre>
+      <div>
         <div>
           Clerk data
           <pre>{JSON.stringify(user, null, 2)}</pre>;
+        </div>
+        <div>
+          Neon data
+          <pre>{JSON.stringify(neonUser, null, 2)}</pre>
         </div>
       </div>
     );
