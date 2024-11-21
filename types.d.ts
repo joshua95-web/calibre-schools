@@ -13,3 +13,18 @@ type InputProps = {
   handleSwitch?: (checked: boolean) => void;
 };
 
+type neonUser = {
+  id: string;
+  first_name: string;
+  last_name: string;
+  prefix: string;
+  suffix: string;
+  mobile: string;
+  telephone: string;
+  created_at: string;
+  updated_at: string;
+  user_role: string;
+  email_verified: boolean;
+  avatar: string;
+  clerk_user_id: string;
+};

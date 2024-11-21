@@ -1,5 +1,6 @@
 "use client";
 
+import { SignOutButton } from "@clerk/nextjs";
 import TextReadInput from "./text-read-input";
 
 const handleChange = (e) => {
@@ -64,6 +65,9 @@ export default function PostSignupForm({
           />
         </form>
         <div className="flex justify-between"></div>
+      </div>
+      <div>
+        <SignOutButton />
       </div>
       Neon data
       <pre>{JSON.stringify(neonUser, null, 2)}</pre>
