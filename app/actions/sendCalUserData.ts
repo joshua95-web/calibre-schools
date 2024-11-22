@@ -1,24 +1,50 @@
 "use server";
-import { User } from "@clerk/nextjs/server";
+
 import { neon } from "@neondatabase/serverless";
 
-export async function sendClerkData(neonUser: neonUser) {
+export async function sendClerkData(neonUser: neonUser, formData: FormData) {
   if (!process.env.DATABASE_URL) {
     throw new Error("DATABASE_URL is not set");
   }
   const sql = neon(process.env.DATABASE_URL);
-  const calUserId = neonUser.id;
-  const first_name = neonUser.first_name;
-  const last_name = neonUser.last_name;
-  const prefix = neonUser.prefix;
-  const suffix = neonUser.suffix;
-  const mobile = neonUser.mobile;
-  const telephone = neonUser.telephone;
+  const email = neonUser.email;
+  const first_name = formData.get("first_name");
+  const last_name = formData.get("last_name");
+  const prefix = formData.get("prefix");
+  const suffix = formData.get("suffix");
+  const mobile = formData.get("mobile");
+  const telephone = formData.get("telephone");
 
-  const sendClerkDataResult = await sql`
- UPDATE "caluser"
+  try {
+    const userRecord = await sql`
+    SELECT id FROM "caluser" WHERE "email" = ${email} LIMIT 1;
+    `;
+    let userId = null;
 
+    if (userRecord.length > 0) {
+      userId = userRecord[0].id;
+    } else {
+      console.error("User not found:", userId);
+    }
+
+    const updateCaluserResult = await sql`
+    UPDATE "caluser"
+    SET
+      prefix = ${prefix},
+      first_name = ${first_name},
+      last_name = ${last_name},
+      suffix = ${suffix},
+      mobile = ${mobile},
+      telephone = ${telephone}
+    WHERE id = ${userId}
   `;
 
-  return sendClerkDataResult;
+    // Put the rest of the info to do with schools as you build it
+
+    if (updateCaluserResult) {
+      console.log("Caluser updated successfully");
+    }
+  } catch (error) {
+    console.error("Error updating caluser:", error);
+  }
 }

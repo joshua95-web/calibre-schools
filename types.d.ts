@@ -15,6 +15,7 @@ type InputProps = {
 
 type neonUser = {
   id: string;
+  email: string;
   first_name: string;
   last_name: string;
   prefix: string;
