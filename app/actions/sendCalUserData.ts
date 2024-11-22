@@ -39,7 +39,7 @@ export async function sendClerkData(neonUser: neonUser, formData: FormData) {
     WHERE id = ${userId}
   `;
 
-    // Put the rest of the info to do with schools as you build it
+    // Put the rest of the info to do with schools as you build it e.g. school_staff, school etc
 
     if (updateCaluserResult) {
       console.log("Caluser updated successfully");
