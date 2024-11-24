@@ -7,6 +7,7 @@ type InputProps = {
   description?: string;
   placeholder?: string;
   addon?: string;
+  onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
   handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onCheckboxChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
