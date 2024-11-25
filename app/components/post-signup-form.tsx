@@ -4,7 +4,6 @@ import { SignOutButton } from "@clerk/nextjs";
 import TextReadInput from "./text-read-input";
 import { sendCalUserData } from "../actions/sendCalUserData";
 
-
 interface PostSignupFormProps {
   neonUser: {
     first_name?: string;
@@ -51,7 +50,7 @@ export default function PostSignupForm({
             label="First Name"
             type="text"
             name="first_name"
-            value={neonUser?.first_name}
+            value={formData?.first_name}
             placeholder="First Name"
             onChange={handleChange}
           />
@@ -59,7 +58,7 @@ export default function PostSignupForm({
             label="Last Name"
             type="text"
             name="last_name"
-            value={neonUser?.first_name}
+            value={formData?.last_name}
             placeholder="Last Name"
             onChange={handleChange}
           />
@@ -67,15 +66,15 @@ export default function PostSignupForm({
             label="Prefix"
             type="text"
             name="prefix"
-            value={neonUser?.prefix}
+            value={formData?.prefix}
             placeholder="Prefix"
             onChange={handleChange}
           />
           <TextReadInput
             label="Mobile"
             type="text"
-            name="Mobile"
-            value={neonUser?.mobile}
+            name="mobile"
+            value={formData?.mobile}
             placeholder="Mobile"
             onChange={handleChange}
           />
