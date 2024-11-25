@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { SignOutButton } from "@clerk/nextjs";
 import TextReadInput from "./text-read-input";
+import { sendCalUserData } from "../actions/sendCalUserData";
+
 
 interface PostSignupFormProps {
   neonUser: {
@@ -36,7 +38,8 @@ export default function PostSignupForm({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted", formData);
+
+    sendCalUserData(neonUser, formData);
   };
 
   return (

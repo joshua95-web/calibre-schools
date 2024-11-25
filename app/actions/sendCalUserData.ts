@@ -2,18 +2,27 @@
 
 import { neon } from "@neondatabase/serverless";
 
-export async function sendClerkData(neonUser: neonUser, formData: FormData) {
+interface FormData {
+  first_name: string;
+  last_name: string;
+  prefix: string;
+  suffix: string;
+  mobile: string;
+  telephone: string;
+}
+
+export async function sendCalUserData(neonUser: neonUser, formData: FormData) {
   if (!process.env.DATABASE_URL) {
     throw new Error("DATABASE_URL is not set");
   }
   const sql = neon(process.env.DATABASE_URL);
-  const email = neonUser.email;
-  const first_name = formData.get("first_name");
-  const last_name = formData.get("last_name");
-  const prefix = formData.get("prefix");
-  const suffix = formData.get("suffix");
-  const mobile = formData.get("mobile");
-  const telephone = formData.get("telephone");
+  const email = neonUser[0]?.email;
+  const first_name = formData.first_name;
+  const last_name = formData.last_name;
+  const prefix = formData.prefix;
+  const suffix = formData.suffix;
+  const mobile = formData.mobile;
+  const telephone = formData.telephone;
 
   try {
     const userRecord = await sql`
@@ -25,6 +34,9 @@ export async function sendClerkData(neonUser: neonUser, formData: FormData) {
       userId = userRecord[0].id;
     } else {
       console.error("User not found:", userId);
+      console.log("user record is", userRecord);
+      console.log("email being queried is", email);
+      console.log("neonUser is", neonUser);
     }
 
     const updateCaluserResult = await sql`
