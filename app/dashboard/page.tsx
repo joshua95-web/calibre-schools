@@ -12,9 +12,9 @@ export default async function Dashboard() {
   console.log(neonUser);
   console.log("clerk id is", clerkId);
 
-  // Check if neonUser exists and has first_name and, if not, fill out a form
+  // Check if neonUser exists and has first_name, last_name and school and, if not, fill out a form
   // include form data for creating an organisation as a school and adding that info to neon and clerk
-  if (!neonUser?.first_name) {
+  if (!neonUser?.first_name && !neonUser?.last_name) {
     // change this later to encompass all required fields
     return (
       <div>
