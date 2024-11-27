@@ -35,7 +35,30 @@ export async function sendClerkData(user: User) {
   const sendClerkDataResult = await sql`
  INSERT INTO "caluser" ("email", "clerk_user_id", "created_at", "updated_at")
   VALUES (${emailAddress}, ${clerkId}, ${createdAt}, ${updatedAt})
+  RETURNING id
   `;
 
-  return sendClerkDataResult;
+  const calUserId = sendClerkDataResult[0].id;
+
+  // member number creation
+
+  const maxMemNumberResult = await sql`
+  SELECT MAX("mem_number") AS max_mem_number FROM "member"
+  `;
+
+  const maxMemNumber = maxMemNumberResult[0]?.max_mem_number || 0;
+  const newMemNumber = maxMemNumber + 1;
+
+  const memberResult = await sql`
+  
+  INSERT INTO "member" ("caluser_id", "clerk_user_id", "created_at", "mem_number")
+  VALUES (${calUserId}, ${clerkId}, ${createdAt}, ${newMemNumber})
+
+  `;
+
+  if (memberResult) {
+    console.log("Member added successfully");
+  }
+
+  return { sendClerkDataResult, memberResult };
 }
