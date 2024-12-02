@@ -32,3 +32,22 @@ type neonUser = [
     clerk_user_id: string;
   }
 ];
+
+type school = {
+  Id: string;
+  laCode: string;
+  laName: string;
+  establishmentNum: string;
+  establishmentName: string;
+  establishmentType: string;
+  establishmentTypeGroup: string;
+  phaseOfEducation: string;
+  street: string;
+  locality: string;
+  address3: string;
+  town: string;
+  county: string;
+  postcode: string;
+  website: string;
+  telephone: string;
+};

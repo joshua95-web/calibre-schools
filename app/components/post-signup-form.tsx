@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SignOutButton } from "@clerk/nextjs";
 import TextReadInput from "./text-read-input";
 import { sendCalUserData } from "../actions/sendCalUserData";
@@ -28,7 +28,19 @@ export default function PostSignupForm({
     last_name: neonUser?.last_name,
     prefix: neonUser?.prefix,
     mobile: neonUser?.mobile,
+    school: "",
   });
+
+  const [schools, setSchools] = useState<school[]>([]);
+
+  useEffect(() => {
+    async function fetchSchools() {
+      const response = await fetch("/data/schooldata20220930.json");
+      const data = await response.json();
+      setSchools(data);
+    }
+    fetchSchools();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -50,7 +62,7 @@ export default function PostSignupForm({
             label="First Name"
             type="text"
             name="first_name"
-            value={formData?.first_name}
+            value={neonUser?.first_name || formData?.first_name}
             placeholder="First Name"
             onChange={handleChange}
           />
@@ -58,7 +70,7 @@ export default function PostSignupForm({
             label="Last Name"
             type="text"
             name="last_name"
-            value={formData?.last_name}
+            value={neonUser?.last_name || formData?.last_name}
             placeholder="Last Name"
             onChange={handleChange}
           />
@@ -66,7 +78,7 @@ export default function PostSignupForm({
             label="Prefix"
             type="text"
             name="prefix"
-            value={formData?.prefix}
+            value={neonUser?.prefix || formData?.prefix}
             placeholder="Prefix"
             onChange={handleChange}
           />
@@ -74,10 +86,45 @@ export default function PostSignupForm({
             label="Mobile"
             type="text"
             name="mobile"
-            value={formData?.mobile}
+            value={neonUser?.mobile || formData?.mobile}
             placeholder="Mobile"
             onChange={handleChange}
           />
+          <div className="mt-4 px-4 py-2 border rounded">
+            <TextReadInput
+              label="School"
+              type="text"
+              name="school"
+              value={formData?.school}
+              onChange={(e) => {
+                const query = e.target.value;
+                setFormData({ ...formData, school: query });
+              }}
+            />
+          </div>
+          <ul className="border mt-2">
+            {schools
+              .filter((school) =>
+                school.establishmentName
+                  .toLowerCase()
+                  .includes(formData.school.toLowerCase())
+              )
+              .slice(0, 10)
+              .map((school) => (
+                <li
+                  key={school.Id}
+                  onClick={() =>
+                    setFormData({
+                      ...formData,
+                      school: school.establishmentName,
+                    })
+                  }
+                  className="p-2 hover:bg-gray-100 cursor-pointer"
+                >
+                  {school.establishmentName} - {school.town}
+                </li>
+              ))}
+          </ul>
           <button
             type="submit"
             className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
