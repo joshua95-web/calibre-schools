@@ -33,7 +33,7 @@ type neonUser = [
   }
 ];
 
-type school = {
+type schoolImport = {
   Id: string;
   laCode: string;
   laName: string;

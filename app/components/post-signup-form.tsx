@@ -31,7 +31,7 @@ export default function PostSignupForm({
     school: "",
   });
 
-  const [schools, setSchools] = useState<school[]>([]);
+  const [schools, setSchools] = useState<schoolImport[]>([]);
 
   useEffect(() => {
     async function fetchSchools() {
