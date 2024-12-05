@@ -22,6 +22,7 @@ export async function sendSchoolData(neonUser: neonUser, school: SchoolData) {
   }
   const sql = neon(process.env.DATABASE_URL);
 
+  
   const school_ref = school.id;
   const la_code = school.laCode;
   const la_name = school.laName;
@@ -32,7 +33,7 @@ export async function sendSchoolData(neonUser: neonUser, school: SchoolData) {
   const website = school.website;
   const telephone = school.telephone;
   const school_name = school.establishmentName;
-  const created_by_id_caluser_id = school.created_by_id;
+  const created_by_id = school.created_by_id;
 
   // rework this with joins in mind
 
@@ -49,20 +50,20 @@ export async function sendSchoolData(neonUser: neonUser, school: SchoolData) {
         website,
         telephone,
         school_name,
-        created_by_id_caluser_id
+        created_by_id
     )
         VALUES (
-    ${school_ref}, -- school_ref
-    ${la_code}, -- la_code
-    ${la_name}, -- la_name
-    ${est_number}, -- est_number
+    ${school_ref},             -- school_ref
+    ${la_code},                -- la_code
+    ${la_name},                -- la_name
+    ${est_number},             -- est_number
     ${est_type},               -- est_type
     ${est_type_group},         -- est_type_group
     ${phase_of_education},     -- phase_of_education
     ${website},                -- website
     ${telephone},              -- telephone
     ${school_name},            -- school_name
-    ${created_by_id_caluser_id} -- created_by_id_caluser_id
+    ${created_by_id}           -- created_by_id
   )
     ON CONFLICT (school_ref) DO UPDATE
       SET
@@ -76,7 +77,7 @@ export async function sendSchoolData(neonUser: neonUser, school: SchoolData) {
         telephone = EXCLUDED.telephone,
         school_name = EXCLUDED.school_name,
         updated_at = NOW(),
-        updated_by_id_caluser_id = ${created_by_id_caluser_id};
+        updated_by_id = ${created_by_id};
         `;
     console.log("School added successfully:", result);
   } catch (error) {
