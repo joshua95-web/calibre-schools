@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { SignOutButton } from "@clerk/nextjs";
 import TextReadInput from "./text-read-input";
 import { sendCalUserData } from "../actions/sendCalUserData";
+import { sendSchoolData } from "../actions/sendSchoolData";
 
 interface PostSignupFormProps {
   neonUser: {
@@ -51,6 +52,7 @@ export default function PostSignupForm({
     e.preventDefault();
 
     sendCalUserData(neonUser, formData);
+    sendSchoolData(neonUser, formData);
   };
 
   return (
