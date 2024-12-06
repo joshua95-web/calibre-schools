@@ -51,3 +51,10 @@ type schoolImport = {
   website: string;
   telephone: string;
 };
+
+// type FormData = {
+//   school: string;
+//   schoolData: schoolImport | null;
+//   neonUser?: NeonUser;
+//   clerkUser?: ClerkUser;
+// };
