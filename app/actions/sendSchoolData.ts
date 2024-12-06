@@ -3,7 +3,7 @@
 import { neon } from "@neondatabase/serverless";
 
 interface SchoolData {
-  id: number;
+  Id: number;
   laCode: number | null;
   laName: string | null;
   establishmentNum: number | null;
@@ -22,8 +22,7 @@ export async function sendSchoolData(neonUser: neonUser, school: SchoolData) {
   }
   const sql = neon(process.env.DATABASE_URL);
 
-  
-  const school_ref = school.id;
+  const school_ref = school.Id;
   const la_code = school.laCode;
   const la_name = school.laName;
   const est_number = school.establishmentNum;
@@ -65,7 +64,7 @@ export async function sendSchoolData(neonUser: neonUser, school: SchoolData) {
     ${school_name},            -- school_name
     ${created_by_id}           -- created_by_id
   )
-    ON CONFLICT (school_ref) DO UPDATE
+    ON CONFLICT (id) DO UPDATE
       SET
         la_code = EXCLUDED.la_code,
         la_name = EXCLUDED.la_name,

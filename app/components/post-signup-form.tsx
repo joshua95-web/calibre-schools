@@ -29,7 +29,8 @@ export default function PostSignupForm({
     last_name: neonUser?.last_name,
     prefix: neonUser?.prefix,
     mobile: neonUser?.mobile,
-    school: "",
+    school: "", // This is a string to store the school name
+    schoolData: null as schoolImport | null,
   });
 
   const [schools, setSchools] = useState<schoolImport[]>([]);
@@ -38,7 +39,11 @@ export default function PostSignupForm({
     async function fetchSchools() {
       const response = await fetch("/data/schooldata20220930.json");
       const data = await response.json();
-      setSchools(data);
+      const parsedData = data.map((school: schoolImport) => ({
+        ...school,
+        Id: Number(school.Id),
+      }));
+      setSchools(parsedData);
     }
     fetchSchools();
   }, []);
@@ -46,6 +51,14 @@ export default function PostSignupForm({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSchoolSelection = (school: schoolImport) => {
+    setFormData((prev) => ({
+      ...prev,
+      school: school.establishmentName,
+      schoolData: school,
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -115,12 +128,7 @@ export default function PostSignupForm({
               .map((school) => (
                 <li
                   key={school.Id}
-                  onClick={() =>
-                    setFormData({
-                      ...formData,
-                      school: school.establishmentName,
-                    })
-                  }
+                  onClick={() => handleSchoolSelection(school)}
                   className="p-2 hover:bg-gray-100 cursor-pointer"
                 >
                   {school.establishmentName} - {school.town}
@@ -145,6 +153,10 @@ export default function PostSignupForm({
       <div>
         Clerk data
         <pre>{JSON.stringify(user, null, 2)}</pre>;
+      </div>
+      <div>
+        Full form data
+        <pre>{JSON.stringify(formData, null, 2)}</pre>;
       </div>
     </div>
   );
