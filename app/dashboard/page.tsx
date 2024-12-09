@@ -1,6 +1,8 @@
 import { Protect, SignOutButton } from "@clerk/nextjs";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { getCaluserData } from "../actions/getCaluserData";
+import { getNeonSchoolData } from "../actions/getNeonSchoolData";
+import { getMemberData } from "../actions/getMemberData";
 import PostSignupForm from "../components/post-signup-form";
 
 export default async function Dashboard() {
@@ -9,8 +11,10 @@ export default async function Dashboard() {
   const clerkId = user?.id;
 
   const neonUser = clerkId ? await getCaluserData(clerkId) : null;
-  console.log(neonUser);
-  console.log("clerk id is", clerkId);
+  const member = neonUser ? await getMemberData(neonUser) : null;
+  const neonSchoolData = member ? await getNeonSchoolData(member) : null;
+  // console.log(neonUser);
+  // console.log("clerk id is", clerkId);
 
   // Check if neonUser exists and has first_name, last_name and school and, if not, fill out a form
   // include form data for creating an organisation as a school and adding that info to neon and clerk
@@ -18,7 +22,7 @@ export default async function Dashboard() {
     // change this later to encompass all required fields
     return (
       <div>
-        <PostSignupForm neonUser={neonUser} clerkId={clerkId} />
+        <PostSignupForm neonUser={neonUser} clerkId={clerkId} member={member} neonSchoolData={neonSchoolData}/>
         <div>
           Clerk data
           <pre>{JSON.stringify(user, null, 2)}</pre>;
@@ -64,6 +68,14 @@ export default async function Dashboard() {
         <div>
           Neon data
           <pre>{JSON.stringify(neonUser, null, 2)}</pre>
+        </div>
+        <div>
+          Member info
+          <pre>{JSON.stringify(member, null, 2)}</pre>
+        </div>
+        <div>
+          Neon School Data
+          <pre>{JSON.stringify(neonSchoolData, null, 2)}</pre>
         </div>
       </div>
     );

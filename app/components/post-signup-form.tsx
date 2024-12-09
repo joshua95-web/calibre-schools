@@ -18,11 +18,15 @@ interface PostSignupFormProps {
     lastName: string;
     email: string;
   };
+  member?: Member;
+  neonSchoolData?: NeonSchoolData;
 }
 
 export default function PostSignupForm({
   neonUser,
   user,
+  member,
+  neonSchoolData,
 }: PostSignupFormProps) {
   const [formData, setFormData] = useState({
     first_name: neonUser?.first_name,
@@ -157,6 +161,14 @@ export default function PostSignupForm({
       <div>
         Full form data
         <pre>{JSON.stringify(formData, null, 2)}</pre>;
+      </div>
+      <div>
+        Member info
+        <pre>{JSON.stringify(member, null, 2)}</pre>
+      </div>
+      <div>
+        Neon School Data
+        <pre>{JSON.stringify(neonSchoolData, null, 2)}</pre>
       </div>
     </div>
   );

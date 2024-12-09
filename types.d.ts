@@ -52,6 +52,32 @@ type schoolImport = {
   telephone: string;
 };
 
+type NeonSchoolData = {
+  Id: string;
+  laCode: string;
+  laName: string;
+  establishmentNum: string;
+  establishmentName: string;
+  establishmentType: string;
+  establishmentTypeGroup: string;
+  phaseOfEducation: string;
+  street: string;
+  locality: string;
+  address3: string;
+  town: string;
+  county: string;
+  postcode: string;
+  website: string;
+  telephone: string;
+};
+
+type Member = [
+  {
+    id: string;
+    caluser_id: string;
+  }
+];
+
 // type FormData = {
 //   school: string;
 //   schoolData: schoolImport | null;
