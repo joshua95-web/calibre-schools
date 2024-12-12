@@ -37,6 +37,14 @@ export default function PostSignupForm({
     schoolData: null as schoolImport | null,
   });
 
+  const handleCancelSearchClick = () => {
+    setFormData({
+      ...formData,
+      school: "",
+      schoolData: null,
+    });
+  };
+
   const [schools, setSchools] = useState<schoolImport[]>([]);
 
   useEffect(() => {
@@ -114,31 +122,37 @@ export default function PostSignupForm({
               label="School"
               type="text"
               name="school"
-              value={formData?.school}
+              value={neonSchoolData[0]?.school_name || formData?.school}
               onChange={(e) => {
                 const query = e.target.value;
                 setFormData({ ...formData, school: query });
               }}
             />
           </div>
-          <ul className="border mt-2">
-            {schools
-              .filter((school) =>
-                school.establishmentName
-                  .toLowerCase()
-                  .includes(formData.school.toLowerCase())
-              )
-              .slice(0, 10)
-              .map((school) => (
-                <li
-                  key={school.Id}
-                  onClick={() => handleSchoolSelection(school)}
-                  className="p-2 hover:bg-gray-100 cursor-pointer"
-                >
-                  {school.establishmentName} - {school.town}
-                </li>
-              ))}
-          </ul>
+
+          {formData.school && formData.school.length > 0 && (
+            <div>
+              <ul className="border mt-2">
+                {schools
+                  .filter((school) =>
+                    school.establishmentName
+                      .toLowerCase()
+                      .includes(formData.school.toLowerCase())
+                  )
+                  .slice(0, 10)
+                  .map((school) => (
+                    <li
+                      key={school.Id}
+                      onClick={() => handleSchoolSelection(school)}
+                      className="p-2 hover:bg-gray-100 cursor-pointer"
+                    >
+                      {school.establishmentName} - {school.town}
+                    </li>
+                  ))}
+              </ul>
+              <button onClick={handleCancelSearchClick}>Cancel Input</button>
+            </div>
+          )}
           <button
             type="submit"
             className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
