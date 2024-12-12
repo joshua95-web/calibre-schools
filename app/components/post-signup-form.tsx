@@ -81,7 +81,7 @@ export default function PostSignupForm({
             label="First Name"
             type="text"
             name="first_name"
-            value={neonUser?.first_name || formData?.first_name}
+            value={neonUser[0]?.first_name || formData?.first_name}
             placeholder="First Name"
             onChange={handleChange}
           />
@@ -89,7 +89,7 @@ export default function PostSignupForm({
             label="Last Name"
             type="text"
             name="last_name"
-            value={neonUser?.last_name || formData?.last_name}
+            value={neonUser[0]?.last_name || formData?.last_name}
             placeholder="Last Name"
             onChange={handleChange}
           />
@@ -97,7 +97,7 @@ export default function PostSignupForm({
             label="Prefix"
             type="text"
             name="prefix"
-            value={neonUser?.prefix || formData?.prefix}
+            value={neonUser[0]?.prefix || formData?.prefix}
             placeholder="Prefix"
             onChange={handleChange}
           />
@@ -105,7 +105,7 @@ export default function PostSignupForm({
             label="Mobile"
             type="text"
             name="mobile"
-            value={neonUser?.mobile || formData?.mobile}
+            value={neonUser[0]?.mobile || formData?.mobile}
             placeholder="Mobile"
             onChange={handleChange}
           />
