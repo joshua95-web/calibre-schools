@@ -150,12 +150,17 @@ export default function PostSignupForm({
                     </li>
                   ))}
               </ul>
-              <button onClick={handleCancelSearchClick}>Cancel Input</button>
+              <button
+                className="bg-red-600 text-lg text-white px-3 py-2 rounded mt-3 m-2"
+                onClick={handleCancelSearchClick}
+              >
+                Cancel Input
+              </button>
             </div>
           )}
           <button
             type="submit"
-            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+            className="bg-blue-600 text-lg text-white px-3 py-2 rounded mt-3 m-2"
             onClick={handleSubmit}
           >
             Submit
