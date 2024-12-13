@@ -28,6 +28,8 @@ export async function sendSchoolData(neonUser: neonUser, formData: FormData) {
 
     const schoolData = formData.schoolData;
 
+    const caluser_id = neonUser[0].id;
+
     const existingJoin = await sql`
   SELECT school_id
   FROM member_school_join
@@ -70,11 +72,35 @@ export async function sendSchoolData(neonUser: neonUser, formData: FormData) {
 
       const schoolId = sendSchoolDataResult[0].id;
 
+      //memberSchoolJoinResult
+
       await sql`
   INSERT INTO member_school_join (member_id, school_id)
   VALUES (${memberId}, ${schoolId})
   ON CONFLICT (member_id, school_id) DO NOTHING;
   `;
+
+      //schoolStaffResult
+
+      const schoolStaffResult = await sql`
+      INSERT INTO school_staff (caluser_id, school_id)
+      VALUES (${caluser_id}, ${schoolId})
+      ON CONFLICT (caluser_id, school_id) DO NOTHING;
+      RETURNING id;
+      `;
+
+      //memberSchoolStaffJoinResult
+
+      await sql`
+    SELECT id
+    FROM school_staff
+    WHERE caluser_id = ${caluser_id}
+    LIMIT 1;
+
+    INSERT INTO member_school_staff_join (member_id, school_staff_id)
+    VALUES (${memberId}, ${schoolStaffResult[0].id})
+    ON CONFLICT DO NOTHING;
+    `;
     }
     console.log("School and member-school join data sent successfully");
   } catch (error) {
