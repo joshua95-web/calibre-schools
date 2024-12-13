@@ -85,7 +85,7 @@ export async function sendSchoolData(neonUser: neonUser, formData: FormData) {
       const schoolStaffResult = await sql`
       INSERT INTO school_staff (caluser_id, school_id)
       VALUES (${caluser_id}, ${schoolId})
-      ON CONFLICT (caluser_id, school_id) DO NOTHING;
+      ON CONFLICT DO NOTHING
       RETURNING id;
       `;
 
@@ -96,7 +96,9 @@ export async function sendSchoolData(neonUser: neonUser, formData: FormData) {
     FROM school_staff
     WHERE caluser_id = ${caluser_id}
     LIMIT 1;
+    `;
 
+      await sql`
     INSERT INTO member_school_staff_join (member_id, school_staff_id)
     VALUES (${memberId}, ${schoolStaffResult[0].id})
     ON CONFLICT DO NOTHING;
