@@ -18,7 +18,7 @@ export async function sendClerkData(user: User) {
   // Check they don't exist already otherwise don't send:
 
   const existingUser = await sql`
-  SELECT 1 FROM "caluser" WHERE "clerk_user_id" = ${clerkId} LIMIT 1
+  SELECT 1 FROM "member" WHERE "clerk_user_id" = ${clerkId} LIMIT 1
   `;
 
   if (existingUser.length > 0) {
@@ -32,14 +32,6 @@ export async function sendClerkData(user: User) {
   console.log("Clerk ID is", clerkId);
   console.log("Email is verified", isVerified);
 
-  const sendClerkDataResult = await sql`
- INSERT INTO "caluser" ("email", "clerk_user_id", "created_at", "updated_at")
-  VALUES (${emailAddress}, ${clerkId}, ${createdAt}, ${updatedAt})
-  RETURNING id
-  `;
-
-  const calUserId = sendClerkDataResult[0].id;
-
   // member number creation
 
   const maxMemNumberResult = await sql`
@@ -49,16 +41,16 @@ export async function sendClerkData(user: User) {
   const maxMemNumber = maxMemNumberResult[0]?.max_mem_number || 0;
   const newMemNumber = maxMemNumber + 1;
 
-  const memberResult = await sql`
+  const sendClerkDataResult = await sql`
   
-  INSERT INTO "member" ("caluser_id", "clerk_user_id", "created_at", "mem_number")
-  VALUES (${calUserId}, ${clerkId}, ${createdAt}, ${newMemNumber})
+  INSERT INTO "member" ("clerk_user_id", "created_at", updated_at, "mem_number")
+  VALUES ( ${clerkId}, ${createdAt}, ${updatedAt}, ${newMemNumber})
 
   `;
 
-  if (memberResult) {
+  if (sendClerkDataResult) {
     console.log("Member added successfully");
   }
 
-  return { sendClerkDataResult, memberResult };
+  return { sendClerkDataResult };
 }

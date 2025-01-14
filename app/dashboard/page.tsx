@@ -1,7 +1,6 @@
 import { Protect, SignOutButton } from "@clerk/nextjs";
 import { auth, currentUser } from "@clerk/nextjs/server";
-import { getCaluserData } from "../actions/getCaluserData";
-import { getNeonSchoolData } from "../actions/getNeonSchoolData";
+// import { getNeonSchoolData } from "../actions/getNeonSchoolData";
 import { getMemberData } from "../actions/getMemberData";
 import PostSignupForm from "../components/post-signup-form";
 
@@ -10,26 +9,29 @@ export default async function Dashboard() {
   const user = await currentUser();
   const clerkId = user?.id;
 
-  const neonUser = clerkId ? await getCaluserData(clerkId) : null;
-  const member = neonUser ? await getMemberData(neonUser) : null;
-  const neonSchoolData = member ? await getNeonSchoolData(member) : null;
+  const member: Member = user ? await getMemberData(clerkId) : null;
+  // const neonSchoolData = member ? await getNeonSchoolData(member) : null;
   // console.log(neonUser);
   // console.log("clerk id is", clerkId);
 
   // Check if neonUser exists and has first_name, last_name and school and, if not, fill out a form
   // include form data for creating an organisation as a school and adding that info to neon and clerk
-  if (!neonUser?.first_name && !neonUser?.last_name) {
+  if (!member?.first_name && !member?.last_name) {
     // change this later to encompass all required fields
     return (
       <div>
-        <PostSignupForm neonUser={neonUser} clerkId={clerkId} member={member} neonSchoolData={neonSchoolData}/>
+        <PostSignupForm
+          member={member}
+          clerkId={clerkId}
+          // neonSchoolData={neonSchoolData}
+        />
         <div>
           Clerk data
           <pre>{JSON.stringify(user, null, 2)}</pre>;
         </div>
         <div>
           Neon data
-          <pre>{JSON.stringify(neonUser, null, 2)}</pre>
+          <pre>{JSON.stringify(member, null, 2)}</pre>
         </div>
       </div>
     );
@@ -67,7 +69,7 @@ export default async function Dashboard() {
         </div>
         <div>
           Neon data
-          <pre>{JSON.stringify(neonUser, null, 2)}</pre>
+          <pre>{JSON.stringify(member, null, 2)}</pre>
         </div>
         <div>
           Member info

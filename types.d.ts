@@ -14,7 +14,7 @@ type InputProps = {
   handleSwitch?: (checked: boolean) => void;
 };
 
-type neonUser = [
+type Member = [
   {
     id: string;
     email: string;
@@ -70,13 +70,6 @@ type NeonSchoolData = {
   website: string;
   telephone: string;
 };
-
-type Member = [
-  {
-    id: string;
-    caluser_id: string;
-  }
-];
 
 // type FormData = {
 //   school: string;
