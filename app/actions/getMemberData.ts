@@ -15,7 +15,7 @@ export async function getMemberData(clerkId: string) {
     id,
     mem_number
     FROM "member" 
-    WHERE "clerk_user_id" = ${clerkId[0]}
+    WHERE "clerk_user_id" = ${clerkId}
     `;
 
   const memberId = memberData.length > 0 ? memberData[0].id : null;
