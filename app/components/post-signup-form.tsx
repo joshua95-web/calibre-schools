@@ -2,37 +2,30 @@
 import { useEffect, useState } from "react";
 import { SignOutButton } from "@clerk/nextjs";
 import TextReadInput from "./text-read-input";
-import { sendCalUserData } from "../actions/sendCalUserData";
 import { sendSchoolData } from "../actions/sendSchoolData";
+import { sendMemberData } from "../actions/sendMemberData";
+
+import { useUser } from "@clerk/nextjs";
 
 interface PostSignupFormProps {
-  neonUser: {
+  member: {
     first_name?: string;
     last_name?: string;
     prefix?: string;
     mobile?: string;
   };
-  user: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-  };
-  member?: Member;
   neonSchoolData?: NeonSchoolData;
 }
 
 export default function PostSignupForm({
-  neonUser,
-  user,
   member,
   neonSchoolData,
 }: PostSignupFormProps) {
   const [formData, setFormData] = useState({
-    first_name: neonUser?.first_name,
-    last_name: neonUser?.last_name,
-    prefix: neonUser?.prefix,
-    mobile: neonUser?.mobile,
+    first_name: member?.first_name ?? "",
+    last_name: member?.last_name ?? "",
+    prefix: member?.prefix ?? "",
+    mobile: member?.mobile ?? "",
     school: "", // This is a string to store the school name
     schoolData: null as schoolImport | null,
   });
@@ -73,10 +66,22 @@ export default function PostSignupForm({
     }));
   };
 
+  const { isLoaded, isSignedIn, user } = useUser();
+
+  if (!isLoaded || !isSignedIn || !user) {
+    return <div>Loading...</div>;
+  }
+
+  const email = user?.emailAddresses[0]?.emailAddress ?? "No email";
+
+  console.log("memberEmail is", email);
+  console.log("first name is", formData.first_name);
+  console.log("last name is", formData.last_name);
+  console.log("prefix is", formData.prefix);
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // sendCalUserData(neonUser, formData); sendMemberData here
+    sendMemberData(email, formData);
     // sendSchoolData(neonUser, formData);
   };
 
@@ -90,7 +95,7 @@ export default function PostSignupForm({
               label="First Name"
               type="text"
               name="first_name"
-              value={member[0]?.first_name || formData?.first_name}
+              value={member?.first_name || formData?.first_name}
               placeholder="First Name"
               onChange={handleChange}
             />
@@ -98,7 +103,7 @@ export default function PostSignupForm({
               label="Last Name"
               type="text"
               name="last_name"
-              value={member[0]?.last_name || formData?.last_name}
+              value={member?.last_name || formData?.last_name}
               placeholder="Last Name"
               onChange={handleChange}
             />
@@ -106,7 +111,7 @@ export default function PostSignupForm({
               label="Prefix"
               type="text"
               name="prefix"
-              value={member[0]?.prefix || formData?.prefix}
+              value={member?.prefix || formData?.prefix}
               placeholder="Prefix"
               onChange={handleChange}
             />
@@ -114,7 +119,7 @@ export default function PostSignupForm({
               label="Mobile"
               type="text"
               name="mobile"
-              value={member[0]?.mobile || formData?.mobile}
+              value={member?.mobile || formData?.mobile}
               placeholder="Mobile"
               onChange={handleChange}
             />

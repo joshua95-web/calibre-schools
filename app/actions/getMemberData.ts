@@ -8,8 +8,6 @@ export async function getMemberData(emailAddress: string) {
   }
   const sql = neon(process.env.DATABASE_URL);
 
-  console.log("email is", emailAddress);
-
   const memberData = await sql`
     SELECT
     mem_number

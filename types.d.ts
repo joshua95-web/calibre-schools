@@ -72,8 +72,10 @@ type NeonSchoolData = {
 };
 
 // type FormData = {
-//   school: string;
-//   schoolData: schoolImport | null;
-//   neonUser?: NeonUser;
-//   clerkUser?: ClerkUser;
+//   first_name: string;
+//   last_name: string;
+//   prefix: string;
+//   suffix: string;
+//   mobile: string;
+//   telephone: string;
 // };

@@ -20,9 +20,7 @@ export async function sendCalUserData(neonUser: neonUser, formData: FormData) {
   const first_name = formData.first_name;
   const last_name = formData.last_name;
   const prefix = formData.prefix;
-  const suffix = formData.suffix;
   const mobile = formData.mobile;
-  const telephone = formData.telephone;
 
   try {
     const userRecord = await sql`
