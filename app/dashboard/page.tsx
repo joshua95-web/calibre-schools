@@ -8,8 +8,8 @@ export default async function Dashboard() {
   const { userId } = await auth();
   const user = await currentUser();
   const clerkId = user?.id;
-
-  const member: Member = user ? await getMemberData(clerkId) : null;
+  const emailAddress = user?.emailAddresses[0].emailAddress;
+  const member: Member = user ? await getMemberData(emailAddress) : null;
   // const neonSchoolData = member ? await getNeonSchoolData(member) : null;
   // console.log(neonUser);
   // console.log("clerk id is", clerkId);
