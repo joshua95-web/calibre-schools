@@ -8,12 +8,15 @@ import { sendMemberData } from "../actions/sendMemberData";
 import { useUser } from "@clerk/nextjs";
 
 interface PostSignupFormProps {
-  member: {
-    first_name?: string;
-    last_name?: string;
-    prefix?: string;
-    mobile?: string;
-  };
+  member: [
+    {
+      first_name?: string;
+      last_name?: string;
+      prefix?: string;
+      mobile?: string;
+    }
+  ];
+
   neonSchoolData?: NeonSchoolData;
 }
 
@@ -22,10 +25,10 @@ export default function PostSignupForm({
   neonSchoolData,
 }: PostSignupFormProps) {
   const [formData, setFormData] = useState({
-    first_name: member?.first_name ?? "",
-    last_name: member?.last_name ?? "",
-    prefix: member?.prefix ?? "",
-    mobile: member?.mobile ?? "",
+    first_name: member[0]?.first_name ?? "",
+    last_name: member[0]?.last_name ?? "",
+    prefix: member[0]?.prefix ?? "",
+    mobile: member[0]?.mobile ?? "",
     school: "", // This is a string to store the school name
     schoolData: null as schoolImport | null,
   });
@@ -74,15 +77,16 @@ export default function PostSignupForm({
 
   const email = user?.emailAddresses[0]?.emailAddress ?? "No email";
 
-  console.log("memberEmail is", email);
-  console.log("first name is", formData.first_name);
-  console.log("last name is", formData.last_name);
-  console.log("prefix is", formData.prefix);
+  // console.log("memberEmail is", email);
+  // console.log("first name is", formData.first_name);
+  // console.log("last name is", formData.last_name);
+  // console.log("prefix is", formData.prefix);
+  // console.log("member first name is: ", member[0].first_name);
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     sendMemberData(email, formData);
-    // sendSchoolData(neonUser, formData);
+    sendSchoolData(email, formData);
   };
 
   if (member) {
@@ -95,7 +99,7 @@ export default function PostSignupForm({
               label="First Name"
               type="text"
               name="first_name"
-              value={member?.first_name || formData?.first_name}
+              value={member[0]?.first_name || formData?.first_name}
               placeholder="First Name"
               onChange={handleChange}
             />
@@ -103,7 +107,7 @@ export default function PostSignupForm({
               label="Last Name"
               type="text"
               name="last_name"
-              value={member?.last_name || formData?.last_name}
+              value={member[0]?.last_name || formData?.last_name}
               placeholder="Last Name"
               onChange={handleChange}
             />
@@ -111,7 +115,7 @@ export default function PostSignupForm({
               label="Prefix"
               type="text"
               name="prefix"
-              value={member?.prefix || formData?.prefix}
+              value={member[0]?.prefix || formData?.prefix}
               placeholder="Prefix"
               onChange={handleChange}
             />
@@ -119,21 +123,21 @@ export default function PostSignupForm({
               label="Mobile"
               type="text"
               name="mobile"
-              value={member?.mobile || formData?.mobile}
+              value={member[0]?.mobile || formData?.mobile}
               placeholder="Mobile"
               onChange={handleChange}
             />
             <div className="mt-4 px-4 py-2 border rounded">
-              {/* <TextReadInput
+              <TextReadInput
                 label="School"
                 type="text"
                 name="school"
-                value={neonSchoolData[0]?.school_name || formData?.school}
+                value={neonSchoolData?.establishmentName || formData?.school}
                 onChange={(e) => {
                   const query = e.target.value;
                   setFormData({ ...formData, school: query });
                 }}
-              /> */}
+              />
             </div>
 
             {formData.school && formData.school.length > 0 && (

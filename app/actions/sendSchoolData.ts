@@ -1,22 +1,32 @@
 "use server";
 
 import { neon } from "@neondatabase/serverless";
+import { Snowflake } from "@theinternetfolks/snowflake";
 
 interface FormData {
   schoolData: schoolImport;
+  first_name: string;
+  last_name: string;
+  prefix: string;
+  mobile: string;
 }
 
-export async function sendSchoolData(neonUser: neonUser, formData: FormData) {
+export async function sendSchoolData(email: string, formData: FormData) {
   if (!process.env.DATABASE_URL) {
     throw new Error("DATABASE_URL is not set");
   }
   const sql = neon(process.env.DATABASE_URL);
 
+  const first_name = formData.first_name;
+  const last_name = formData.last_name;
+  const prefix = formData.prefix;
+  const mobile = formData.mobile;
+
   try {
     const memberData = await sql`
   SELECT id
   FROM "member"
-  WHERE caluser_id = ${neonUser[0].id}
+  WHERE email = ${email}
   LIMIT 1
   `;
 
@@ -24,86 +34,94 @@ export async function sendSchoolData(neonUser: neonUser, formData: FormData) {
       throw new Error("No member record found for this user");
     }
 
-    const memberId = memberData[0].id;
+    // const memberId = memberData[0].id;
 
     const schoolData = formData.schoolData;
 
-    const caluser_id = neonUser[0].id;
+    //   const existingJoin = await sql`
+    // SELECT id
+    // FROM school_staff
+    // WHERE member_id = ${memberId}
+    // LIMIT 1;
+    // `;
 
-    const existingJoin = await sql`
-  SELECT school_id
-  FROM member_school_join
-  WHERE member_id = ${memberId}
-  LIMIT 1;
-  `;
+    //   if (existingJoin.length > 0) {
+    //     throw new Error("This user is already associated with a school");
+    //   } else {
 
-    if (existingJoin.length > 0) {
-      throw new Error("This user is already associated with a school");
+    const schoolId = Snowflake.generate({ timestamp: Date.now() });
+
+    const existingSchool = await sql`
+    SELECT establishment_name
+    FROM school
+    WHERE establishment_name = ${schoolData.establishmentName}
+    `;
+
+    if (existingSchool.length > 0) {
+      console.log("School already exists in the database");
+      return {
+        message: "School already exists in the database, no insert performed",
+      };
     } else {
       const sendSchoolDataResult = await sql`
     INSERT INTO "school" (
-    school_ref,
+    id,
     la_code,
     la_name,
-    est_number,
-    est_type,
-    est_type_group,
+    establishment_number,
+    establishment_type,
+    establishment_type_group,
     phase_of_education,
-    website,
+    street,
+    locality,
+    town,
+    postcode,
+    school_website,
     telephone,
-    school_name,
-    created_by_id
+    establishment_name
     )
     VALUES (
-    ${schoolData.Id}, --school_ref
+    ${schoolId}, --id
     ${schoolData.laCode}, --la_code
     ${schoolData.laName}, --la_name
     ${schoolData.establishmentNum}, --est_number
     ${schoolData.establishmentType}, --est_type
     ${schoolData.establishmentTypeGroup}, --est_type_group
     ${schoolData.phaseOfEducation}, --phase_of_education
+    ${schoolData.street}, --street
+    ${schoolData.locality}, --locality
+    ${schoolData.town}, --town
+    ${schoolData.postcode}, --postcode
     ${schoolData.website}, --website
     ${schoolData.telephone}, --telephone
-    ${schoolData.establishmentName}, --school_name
-    ${neonUser[0].id} --created_by_id
+    ${schoolData.establishmentName} --school_name
     )
     RETURNING id;
     `;
 
-      const schoolId = sendSchoolDataResult[0].id;
+      // send schoolStaff
 
-      //memberSchoolJoinResult
-
-      await sql`
-  INSERT INTO member_school_join (member_id, school_id)
-  VALUES (${memberId}, ${schoolId})
-  ON CONFLICT (member_id, school_id) DO NOTHING;
-  `;
-
-      //schoolStaffResult
-
-      const schoolStaffResult = await sql`
-      INSERT INTO school_staff (caluser_id, school_id)
-      VALUES (${caluser_id}, ${schoolId})
-      ON CONFLICT DO NOTHING
-      RETURNING id;
+      const existingSchoolStaff = await sql`
+      SELECT id
+      FROM school_staff
+      WHERE email = ${email}
       `;
 
-      //memberSchoolStaffJoinResult
-
-      await sql`
-    SELECT id
-    FROM school_staff
-    WHERE caluser_id = ${caluser_id}
-    LIMIT 1;
-    `;
-
-      await sql`
-    INSERT INTO member_school_staff_join (member_id, school_staff_id)
-    VALUES (${memberId}, ${schoolStaffResult[0].id})
-    ON CONFLICT DO NOTHING;
-    `;
+      if (existingSchoolStaff.length > 0) {
+        console.log("School staff record already exists for this user");
+      } else {
+        try {
+          // schoolStaff data send
+          await sql`
+        INSERT INTO school_staff (title, first_name, last_name, email, mobile, school_id)
+        VALUES (${prefix}, ${first_name}, ${last_name}, ${email}, ${mobile}, ${sendSchoolDataResult[0].id})
+        `;
+        } catch (error) {
+          console.error("Error updating school_staff: ", error);
+        }
+      }
     }
+
     console.log("School and member-school join data sent successfully");
   } catch (error) {
     console.error("Error sending school data", error);

@@ -10,7 +10,11 @@ export async function getMemberData(emailAddress: string) {
 
   const memberData = await sql`
     SELECT
-    mem_number
+    mem_number,
+    first_name,
+    last_name,
+    prefix,
+    mobile
     FROM "member" 
     WHERE "email" = ${emailAddress}
     `;
