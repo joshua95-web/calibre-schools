@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { SignOutButton } from "@clerk/nextjs";
+import { SignOutButton, useOrganizationList } from "@clerk/nextjs";
 import TextReadInput from "./text-read-input";
 import { sendSchoolData } from "../actions/sendSchoolData";
 import { sendMemberData } from "../actions/sendMemberData";
@@ -69,7 +69,11 @@ export default function PostSignupForm({
     }));
   };
 
+  // get clerk user details
+
   const { isLoaded, isSignedIn, user } = useUser();
+
+  const { createOrganization } = useOrganizationList();
 
   if (!isLoaded || !isSignedIn || !user) {
     return <div>Loading...</div>;
@@ -77,13 +81,17 @@ export default function PostSignupForm({
 
   const email = user?.emailAddresses[0]?.emailAddress ?? "No email";
 
-  // console.log("memberEmail is", email);
-  // console.log("first name is", formData.first_name);
-  // console.log("last name is", formData.last_name);
-  // console.log("prefix is", formData.prefix);
-  // console.log("member first name is: ", member[0].first_name);
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    try {
+      const newOrg = createOrganization({
+        name: formData.schoolData?.establishmentName || "Default Org Name",
+      });
+      console.log("Clerk org created!", newOrg);
+    } catch (error) {
+      console.error("Clerk org creation failed", error);
+    }
 
     sendMemberData(email, formData);
     sendSchoolData(email, formData);
