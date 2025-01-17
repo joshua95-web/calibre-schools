@@ -84,17 +84,25 @@ export default function PostSignupForm({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      const newOrg = createOrganization({
-        name: formData.schoolData?.establishmentName || "Default Org Name",
-      });
-      console.log("Clerk org created!", newOrg);
-    } catch (error) {
-      console.error("Clerk org creation failed", error);
-    }
-
     sendMemberData(email, formData);
-    sendSchoolData(email, formData);
+    if (!formData.schoolData || !formData.schoolData.establishmentName) {
+      throw new Error("School data is missing");
+    } else {
+      try {
+        const newOrg = createOrganization({
+          name: formData.schoolData?.establishmentName || "Default Org Name",
+        });
+        console.log("Clerk org created!", newOrg);
+      } catch (error) {
+        console.error("Clerk org creation failed", error);
+      }
+      try {
+        sendSchoolData(email, formData);
+        console.log("School data sent to Neon");
+      } catch (error) {
+        console.error("School data failed to send to Neon", error);
+      }
+    }
   };
 
   if (member) {
