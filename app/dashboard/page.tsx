@@ -10,12 +10,13 @@ export default async function Dashboard() {
   const clerkId = user?.id;
   const emailAddress = user?.emailAddresses[0].emailAddress;
   const member: Member = user ? await getMemberData(emailAddress) : null;
-  const neonSchoolData = member ? await getNeonSchoolData(member) : null;
+  const neonSchoolData = member ? await getNeonSchoolData(emailAddress) : null;
   // console.log(neonUser);
   // console.log("clerk id is", clerkId);
 
   console.log(member);
   console.log(neonSchoolData.length);
+  console.log(neonSchoolData);
 
   // Check if neonUser exists and has first_name, last_name and school and, if not, fill out a form
   // include form data for creating an organisation as a school and adding that info to neon and clerk
@@ -82,8 +83,8 @@ export default async function Dashboard() {
           <pre>{JSON.stringify(member, null, 2)}</pre>
         </div>
         <div>
-          {/* Neon School Data
-          <pre>{JSON.stringify(neonSchoolData, null, 2)}</pre> */}
+          Neon School Data
+          <pre>{JSON.stringify(neonSchoolData, null, 2)}</pre>
         </div>
       </div>
     );

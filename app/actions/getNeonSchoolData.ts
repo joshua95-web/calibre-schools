@@ -2,7 +2,7 @@
 
 import { neon } from "@neondatabase/serverless";
 
-export async function getNeonSchoolData(member: Member) {
+export async function getNeonSchoolData(emailAddress: string) {
   if (!process.env.DATABASE_URL) {
     throw new Error("DATABASE_URL is not set");
   }
@@ -26,8 +26,10 @@ export async function getNeonSchoolData(member: Member) {
     s.establishment_name
     FROM school s
     JOIN school_staff ss ON s.id = ss.school_id
-    WHERE ss.email = ${member[0].email}
+    WHERE ss.email = ${emailAddress}
     `;
+
+  // console.log(emailAddress);
 
   return neonSchoolData;
 }
