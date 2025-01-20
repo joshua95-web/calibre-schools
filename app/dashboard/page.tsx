@@ -16,7 +16,7 @@ export default async function SchoolAdminDashboard() {
 
   if (
     (!member[0].first_name && !member[0].last_name) ||
-    neonSchoolData.length === 0
+    neonSchoolData?.length === 0
   ) {
     // change this later to encompass all required fields
     return (
@@ -58,6 +58,22 @@ export default async function SchoolAdminDashboard() {
         <div className="bg-fuchsia-700 px-2 py-2 rounded-3xl text-white font-semibold">
           <SignOutButton />
         </div>
+      </div>
+      <div>
+        Clerk data
+        <pre>{JSON.stringify(user, null, 2)}</pre>;
+      </div>
+      <div>
+        Neon data
+        <pre>{JSON.stringify(member, null, 2)}</pre>
+      </div>
+      <div>
+        Member info
+        <pre>{JSON.stringify(member, null, 2)}</pre>
+      </div>
+      <div>
+        Neon School Data
+        <pre>{JSON.stringify(neonSchoolData, null, 2)}</pre>
       </div>
     </div>
   );
