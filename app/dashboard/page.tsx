@@ -1,25 +1,19 @@
-import { Protect, SignOutButton } from "@clerk/nextjs";
+import { checkRole } from "@/utils/roles";
+import { redirect } from "next/navigation";
+import { SignOutButton } from "@clerk/nextjs";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { getNeonSchoolData } from "../actions/getNeonSchoolData";
 import { getMemberData } from "../actions/getMemberData";
 import PostSignupForm from "../components/post-signup-form";
 
-export default async function Dashboard() {
+export default async function SchoolAdminDashboard() {
   const { userId } = await auth();
   const user = await currentUser();
   const clerkId = user?.id;
   const emailAddress = user?.emailAddresses[0].emailAddress;
   const member: Member = user ? await getMemberData(emailAddress) : null;
   const neonSchoolData = member ? await getNeonSchoolData(emailAddress) : null;
-  // console.log(neonUser);
-  // console.log("clerk id is", clerkId);
 
-  console.log(member);
-  console.log(neonSchoolData.length);
-  console.log(neonSchoolData);
-
-  // Check if neonUser exists and has first_name, last_name and school and, if not, fill out a form
-  // include form data for creating an organisation as a school and adding that info to neon and clerk
   if (
     (!member[0].first_name && !member[0].last_name) ||
     neonSchoolData.length === 0
@@ -44,49 +38,27 @@ export default async function Dashboard() {
     );
   }
 
-  if (userId) {
-    return (
-      <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-        <Protect
-          role="org:school_admin"
-          fallback={
-            <div className="flex items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-              <p className="bg-red-700 px-10 py-2 rounded-lg text-white text-6xl">
-                You do not have permission to view this content
-              </p>
-              <div className="bg-sky-700 px-3 py-2 rounded-lg text-white text-6xl">
-                <SignOutButton />
-              </div>
-            </div>
-          }
-        >
-          <div className="bg-sky-700 px-10 py-2 rounded-lg text-white text-6xl">
-            <h1>Dashboard</h1>
-          </div>
-          <div>
-            <p className="text-2xl">(a bunch of data only teachers can see)</p>
-          </div>
-          <div className="bg-sky-700 px-3 py-2 rounded-lg text-white text-6xl">
-            <SignOutButton />
-          </div>
-        </Protect>
-        <div>
-          Clerk data
-          <pre>{JSON.stringify(user, null, 2)}</pre>;
-        </div>
-        <div>
-          Neon data
-          <pre>{JSON.stringify(member, null, 2)}</pre>
-        </div>
-        <div>
-          Member info
-          <pre>{JSON.stringify(member, null, 2)}</pre>
-        </div>
-        <div>
-          Neon School Data
-          <pre>{JSON.stringify(neonSchoolData, null, 2)}</pre>
+  // page protection
+  const isSchoolAdmin = await checkRole("school_admin");
+  if (!isSchoolAdmin) {
+    redirect("/");
+  }
+
+  return (
+    <div>
+      <div>
+        <div className="bg-orange-500 font-extrabold flex justify-center text-2xl mx-80 px-9 py-3 rounded-3xl">
+          <p>
+            This is the protected school admin dashboard. You can see this
+            because you have the school_admin role.
+          </p>
         </div>
       </div>
-    );
-  }
+      <div className="flex justify-center py-10">
+        <div className="bg-fuchsia-700 px-2 py-2 rounded-3xl text-white font-semibold">
+          <SignOutButton />
+        </div>
+      </div>
+    </div>
+  );
 }
