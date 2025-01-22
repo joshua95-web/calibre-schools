@@ -98,6 +98,26 @@ export async function sendSchoolData(email: string, formData: FormData) {
     )
     RETURNING id;
     `;
+      const existingMemberSchool = await sql`
+    SELECT id
+    FROM member_school
+    WHERE member_id = ${memberId} AND school_id = ${schoolId}
+  `;
+
+      if (existingMemberSchool.length > 0) {
+        console.log("Member-school association already exists");
+      } else {
+        await sql`
+      INSERT INTO member_school (
+        member_id, school_id, main_contact_id
+      )
+      VALUES (
+        ${memberData[0].id}, -- member_id
+        ${schoolId}, -- school_id
+        ${memberData[0].id} -- main_contact_id
+      )
+    `;
+      }
 
       // send schoolStaff
 

@@ -14,10 +14,10 @@ export default function StudentManager({
     // this down from dashboard when retrieved from getStudents() action
     // create and insert member number the same way but via the
     // addStudent() action
-    studentFirstName:
-      // student?.firstname ??
+    student_first_name:
+      // student?.first_name ??
       "",
-    studentLastName:
+    student_last_name:
       //student?.last_name ??
       "",
   });
@@ -33,8 +33,35 @@ export default function StudentManager({
         <div className="text-3xl text-black font-extrabold">
           <h1>Your Students</h1>
           <div></div>
+          <h1>Add a Student...</h1>
+          {/* hide this form until they click 
+          a big plus button */}
           <form>
-            <TextReadInput label="" />
+            <TextReadInput
+              label="Student First Name"
+              type="text"
+              name="student_first_name"
+              value={formData?.student_first_name}
+              placeholder="Student First Name"
+              onChange={handleChange}
+            />
+            <TextReadInput
+              label="Student Last Name"
+              type="text"
+              name="student_last_name"
+              value={formData?.student_last_name}
+              placeholder="Student Last Name"
+              onChange={handleChange}
+            />
+            {/* cancel add button that
+            hides this section again and
+            erases formData */}
+            <button
+              type="submit"
+              className="bg-blue-600 text-lg text-white px-3 py-2 rounded mt-3 m-2"
+            >
+              Submit
+            </button>
           </form>
         </div>
       </div>
