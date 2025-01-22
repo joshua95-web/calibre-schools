@@ -5,6 +5,7 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { getNeonSchoolData } from "../actions/getNeonSchoolData";
 import { getMemberData } from "../actions/getMemberData";
 import PostSignupForm from "../components/post-signup-form";
+import { UserButton } from "@clerk/nextjs";
 
 export default async function SchoolAdminDashboard() {
   const { userId } = await auth();
@@ -47,14 +48,30 @@ export default async function SchoolAdminDashboard() {
   return (
     <div>
       <div>
-        <div className="bg-orange-500 font-extrabold flex justify-center text-2xl mx-80 px-9 py-3 rounded-3xl">
+        <div className="flex justify-left">
+          <div className="bg-fuchsia-800 rounded-r-full p-2">
+            <UserButton
+              showName={true}
+              appearance={{ elements: { formButtonPrimary: "text-white" } }}
+            />
+          </div>
+        </div>
+        <div className="bg-red-500 font-extrabold flex justify-center text-2xl mx-80 px-9 py-3 rounded-3xl">
           <p>
             This is the protected school admin dashboard. You can see this
             because you have the school_admin role.
           </p>
         </div>
+        <div>
+          <div className="m-2">
+            {/* make a pupil list component and an add-pupil component for here */}
+            <div className="bg-slate-600 text-white mx-80 py-2 px-3 rounded-full">
+              Your Pupils
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="flex justify-center py-10">
+      <div className="flex justify-left py-10">
         <div className="bg-fuchsia-700 px-2 py-2 rounded-3xl text-white font-semibold">
           <SignOutButton />
         </div>
