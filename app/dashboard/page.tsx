@@ -6,6 +6,7 @@ import { getNeonSchoolData } from "../actions/getNeonSchoolData";
 import { getMemberData } from "../actions/getMemberData";
 import PostSignupForm from "../components/post-signup-form";
 import { UserButton } from "@clerk/nextjs";
+import StudentManager from "../components/student-manager";
 
 export default async function SchoolAdminDashboard() {
   const { userId } = await auth();
@@ -65,9 +66,8 @@ export default async function SchoolAdminDashboard() {
         <div>
           <div className="m-2">
             {/* make a pupil list component and an add-pupil component for here */}
-            <div className="bg-slate-600 text-white mx-80 py-2 px-3 rounded-full">
-              Your Pupils
-            </div>
+            <StudentManager teacherMemberId={member[0].id} />
+            <div className="bg-slate-600 text-white mx-80 py-2 px-3"></div>
           </div>
         </div>
       </div>
