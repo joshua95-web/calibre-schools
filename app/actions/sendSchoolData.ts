@@ -101,7 +101,7 @@ export async function sendSchoolData(email: string, formData: FormData) {
       const existingMemberSchool = await sql`
     SELECT id
     FROM member_school
-    WHERE member_id = ${memberId} AND school_id = ${schoolId}
+    WHERE member_id = ${memberData[0].id} AND school_id = ${schoolId}
   `;
 
       if (existingMemberSchool.length > 0) {

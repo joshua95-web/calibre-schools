@@ -10,6 +10,7 @@ interface StudentData {
 
 export async function addStudent(
   teacherMemberId: string,
+  schoolId: string,
   formData: StudentData
 ) {
   if (!process.env.DATABASE_URL) {

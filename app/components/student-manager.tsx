@@ -4,10 +4,12 @@ import TextReadInput from "./text-read-input";
 
 interface StudentManagerProps {
   teacherMemberId: string;
+  schoolId: string;
 }
 
 export default function StudentManager({
   teacherMemberId,
+  schoolId,
 }: StudentManagerProps) {
   const [formData, setFormData] = useState({
     // member data for the student retrieved via member_school table, drill
@@ -21,6 +23,8 @@ export default function StudentManager({
       //student?.last_name ??
       "",
   });
+
+  console.log("schoolId: ", schoolId);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

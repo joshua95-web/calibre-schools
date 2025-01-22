@@ -66,7 +66,10 @@ export default async function SchoolAdminDashboard() {
         <div>
           <div className="m-2">
             {/* make a pupil list component and an add-pupil component for here */}
-            <StudentManager teacherMemberId={member[0].id} />
+            <StudentManager 
+            teacherMemberId={member[0].id} 
+            schoolId={neonSchoolData?[0].school_id}
+            />
             <div className="bg-slate-600 text-white mx-80 py-2 px-3"></div>
           </div>
         </div>
