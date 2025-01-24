@@ -24,11 +24,19 @@ export default function StudentManager({
       "",
   });
 
-  console.log("schoolId: ", schoolId);
-
+  console.log(
+    "I'm a console log inside the student manager component. This user's schoolID is ",
+    schoolId
+  );
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    console.log("addStudent server action will be initiated");
   };
 
   if (teacherMemberId) {
@@ -63,6 +71,7 @@ export default function StudentManager({
             <button
               type="submit"
               className="bg-blue-600 text-lg text-white px-3 py-2 rounded mt-3 m-2"
+              onClick={handleSubmit}
             >
               Submit
             </button>

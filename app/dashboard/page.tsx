@@ -13,8 +13,10 @@ export default async function SchoolAdminDashboard() {
   const user = await currentUser();
   const clerkId = user?.id;
   const emailAddress = user?.emailAddresses[0].emailAddress;
-  const member: Member = user ? await getMemberData(emailAddress) : null;
+  const member = user ? await getMemberData(emailAddress) : null;
+  const teacherMemberId = member?.[0]?.mem_number ?? null;
   const neonSchoolData = member ? await getNeonSchoolData(emailAddress) : null;
+  const school_id = neonSchoolData?.[0]?.school_id ?? null;
 
   if (
     (!member[0].first_name && !member[0].last_name) ||
@@ -45,7 +47,7 @@ export default async function SchoolAdminDashboard() {
   if (!isSchoolAdmin) {
     redirect("/");
   }
-
+  console.log("teacherMemberId:", teacherMemberId, "schoolId:", school_id);
   return (
     <div>
       <div>
@@ -66,11 +68,11 @@ export default async function SchoolAdminDashboard() {
         <div>
           <div className="m-2">
             {/* make a pupil list component and an add-pupil component for here */}
-            <StudentManager 
-            teacherMemberId={member[0].id} 
-            schoolId={neonSchoolData?[0].school_id}
+            <StudentManager
+              teacherMemberId={teacherMemberId}
+              schoolId={school_id}
             />
-            <div className="bg-slate-600 text-white mx-80 py-2 px-3"></div>
+            {/* <div className="bg-slate-600 text-white mx-80 py-2 px-3"></div> */}
           </div>
         </div>
       </div>
