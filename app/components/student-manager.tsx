@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import TextReadInput from "./text-read-input";
+import { FaPlusCircle } from "react-icons/fa";
 
 interface StudentManagerProps {
   teacherMemberId: string;
@@ -50,58 +51,83 @@ export default function StudentManager({
     );
   };
 
+  const ToggleForm = () => {
+    const [isHidden, setIsHidden] = useState(true);
+
+    const ToggleVisibility = () => {
+      setIsHidden(!isHidden);
+    };
+  };
+
   if (teacherMemberId) {
     return (
       <div>
         <div className="text-3xl text-black font-sans">
           <h1>Your Students</h1>
           <p className="text-lg p-3 text-slate-500">No students yet...</p>
-          <h1>Add a Student...</h1>
-          {/* hide this form until they click 
+          <div className="flex justify-normal">
+            {/* hide this form until they click 
           a big plus button */}
-          <form className=" flex justify-left relative mt-4 space-x-10 divide-x divide-slate-200 px-4 sm:px-11">
-            <div className="space-y-3 px-4">
-              <TextReadInput
-                label="Student First Name"
-                type="text"
-                name="student_first_name"
-                value={formData?.student_first_name}
-                placeholder="Student First Name"
-                onChange={handleChange}
-              />
+            <div className="flex justify-left mt-5  text-white text-lg font-semibold">
+              <button className=" bg-amber-500 w-40 h-20 rounded-full">
+                <div className="flex justify-center m-1">Add a Student...</div>
+                <div className="flex justify-center">
+                  <FaPlusCircle size={30} color="white" />
+                </div>
+              </button>
             </div>
-            <div className="space-y-3 px-4">
-              <TextReadInput
-                label="Student Last Name"
-                type="text"
-                name="student_last_name"
-                value={formData?.student_last_name}
-                placeholder="Student Last Name"
-                onChange={handleChange}
-              />
-            </div>
-            <div className="grid grid-cols-2">
-              <div className="flex px-4 py-2">
-                <button
-                  type="submit"
-                  className="bg-amber-500 text-lg text-white px-3 py-2 rounded-full mt-3 m-2"
-                  onClick={handleSubmit}
-                >
-                  Add Student
-                </button>
-                <div className="flex">
+            <form className=" flex justify-left relative mt-4 space-x-10 divide-x divide-slate-200 px-4 sm:px-11">
+              <div className="space-y-3 px-4">
+                <TextReadInput
+                  label="Student First Name"
+                  type="text"
+                  name="student_first_name"
+                  value={formData?.student_first_name}
+                  placeholder="Student First Name"
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="space-y-3 px-4">
+                <TextReadInput
+                  label="Student Last Name"
+                  type="text"
+                  name="student_last_name"
+                  value={formData?.student_last_name}
+                  placeholder="Student Last Name"
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="grid grid-cols-2">
+                <div className="flex w-80 px-4 py-1">
                   <button
-                    className="bg-red-800 text-sm text-white px-3 py-2 rounded-full mt-3 m-2"
-                    onClick={handleCancelInputClick}
+                    type="submit"
+                    className="bg-amber-500 text-lg text-white px-3 py-2 rounded-full mt-3 m-2"
+                    onClick={handleSubmit}
                   >
-                    Cancel Input
+                    Add Student
                   </button>
+                  <div className="flex justify-end">
+                    <button
+                      className="bg-red-800 text-sm text-white px-3 py-2 rounded-full mt-3 m-2"
+                      onClick={handleCancelInputClick}
+                    >
+                      Cancel Input
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     );
+  } else {
+    console.error(
+      "teacherMemberId is not found. Currently, teacherMemberId returns: ",
+      teacherMemberId
+    );
+    <div className="bg-red-700 text-lg">
+      No member ID found for current user...
+    </div>;
   }
 }
