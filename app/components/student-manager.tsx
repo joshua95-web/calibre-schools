@@ -33,6 +33,14 @@ export default function StudentManager({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleCancelInputClick = () => {
+    setFormData({
+      ...formData,
+      student_first_name: "",
+      student_last_name: "",
+    });
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -45,9 +53,9 @@ export default function StudentManager({
   if (teacherMemberId) {
     return (
       <div>
-        <div className="text-3xl text-black font-extrabold">
+        <div className="text-3xl text-black font-sans">
           <h1>Your Students</h1>
-          <p className="text-">No students yet...</p>
+          <p className="text-lg p-3 text-slate-500">No students yet...</p>
           <h1>Add a Student...</h1>
           {/* hide this form until they click 
           a big plus button */}
@@ -72,17 +80,24 @@ export default function StudentManager({
                 onChange={handleChange}
               />
             </div>
-            {/* cancel add button that
-            hides this section again and
-            erases formData */}
-            <div className="px-4 py-2">
-              <button
-                type="submit"
-                className="bg-amber-500 text-lg text-white px-3 py-2 rounded mt-3 m-2"
-                onClick={handleSubmit}
-              >
-                Add Student
-              </button>
+            <div className="grid grid-cols-2">
+              <div className="flex px-4 py-2">
+                <button
+                  type="submit"
+                  className="bg-amber-500 text-lg text-white px-3 py-2 rounded-full mt-3 m-2"
+                  onClick={handleSubmit}
+                >
+                  Add Student
+                </button>
+                <div className="flex">
+                  <button
+                    className="bg-red-800 text-sm text-white px-3 py-2 rounded-full mt-3 m-2"
+                    onClick={handleCancelInputClick}
+                  >
+                    Cancel Input
+                  </button>
+                </div>
+              </div>
             </div>
           </form>
         </div>
