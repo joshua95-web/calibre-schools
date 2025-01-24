@@ -45,6 +45,8 @@ export default function StudentManager({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    // addStudent(teacherMemberId, schoolId, formData)
+
     console.log(
       "addStudent server action will be initiated using the following data: ",
       formData
