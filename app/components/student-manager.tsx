@@ -36,7 +36,10 @@ export default function StudentManager({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log("addStudent server action will be initiated");
+    console.log(
+      "addStudent server action will be initiated using the following data: ",
+      formData
+    );
   };
 
   if (teacherMemberId) {
@@ -44,37 +47,43 @@ export default function StudentManager({
       <div>
         <div className="text-3xl text-black font-extrabold">
           <h1>Your Students</h1>
-          <div></div>
+          <p className="text-">No students yet...</p>
           <h1>Add a Student...</h1>
           {/* hide this form until they click 
           a big plus button */}
-          <form>
-            <TextReadInput
-              label="Student First Name"
-              type="text"
-              name="student_first_name"
-              value={formData?.student_first_name}
-              placeholder="Student First Name"
-              onChange={handleChange}
-            />
-            <TextReadInput
-              label="Student Last Name"
-              type="text"
-              name="student_last_name"
-              value={formData?.student_last_name}
-              placeholder="Student Last Name"
-              onChange={handleChange}
-            />
+          <form className=" flex justify-left relative mt-4 space-x-10 divide-x divide-slate-200 px-4 sm:px-11">
+            <div className="space-y-3 px-4">
+              <TextReadInput
+                label="Student First Name"
+                type="text"
+                name="student_first_name"
+                value={formData?.student_first_name}
+                placeholder="Student First Name"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="space-y-3 px-4">
+              <TextReadInput
+                label="Student Last Name"
+                type="text"
+                name="student_last_name"
+                value={formData?.student_last_name}
+                placeholder="Student Last Name"
+                onChange={handleChange}
+              />
+            </div>
             {/* cancel add button that
             hides this section again and
             erases formData */}
-            <button
-              type="submit"
-              className="bg-blue-600 text-lg text-white px-3 py-2 rounded mt-3 m-2"
-              onClick={handleSubmit}
-            >
-              Submit
-            </button>
+            <div className="px-4 py-2">
+              <button
+                type="submit"
+                className="bg-amber-500 text-lg text-white px-3 py-2 rounded mt-3 m-2"
+                onClick={handleSubmit}
+              >
+                Add Student
+              </button>
+            </div>
           </form>
         </div>
       </div>

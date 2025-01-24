@@ -52,11 +52,8 @@ export default async function SchoolAdminDashboard() {
     <div>
       <div>
         <div className="flex justify-left">
-          <div className="bg-fuchsia-800 rounded-r-full p-2">
-            <UserButton
-              showName={true}
-              appearance={{ elements: { formButtonPrimary: "text-white" } }}
-            />
+          <div className="bg-amber-500 rounded-r-full p-2">
+            <UserButton showName={true} appearance={{}} />
           </div>
         </div>
         <div className="bg-red-500 font-extrabold flex justify-center text-2xl mx-80 px-9 py-3 rounded-3xl">
