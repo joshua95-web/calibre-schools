@@ -109,89 +109,115 @@ export default function PostSignupForm({
     return (
       <div>
         <div className=" text-3xl text-black font-extrabold ">
-          <h1>We need some more information...</h1>
-          <form>
-            <TextReadInput
-              label="First Name"
-              type="text"
-              name="first_name"
-              value={member[0]?.first_name || formData?.first_name}
-              placeholder="First Name"
-              onChange={handleChange}
-            />
-            <TextReadInput
-              label="Last Name"
-              type="text"
-              name="last_name"
-              value={member[0]?.last_name || formData?.last_name}
-              placeholder="Last Name"
-              onChange={handleChange}
-            />
-            <TextReadInput
-              label="Prefix"
-              type="text"
-              name="prefix"
-              value={member[0]?.prefix || formData?.prefix}
-              placeholder="Prefix"
-              onChange={handleChange}
-            />
-            <TextReadInput
-              label="Mobile"
-              type="text"
-              name="mobile"
-              value={member[0]?.mobile || formData?.mobile}
-              placeholder="Mobile"
-              onChange={handleChange}
-            />
-            <div className="mt-4 px-4 py-2 border rounded">
-              <TextReadInput
-                label="School"
-                type="text"
-                name="school"
-                value={neonSchoolData?.establishmentName || formData?.school}
-                onChange={(e) => {
-                  const query = e.target.value;
-                  setFormData({ ...formData, school: query });
-                }}
-              />
-            </div>
+          <div className="flex justify-center">
+            <div className="flex-end">
+              <h1 className="text-slate-900 dark:text-slate-200 p-4">
+                We need some more information...
+              </h1>
+              <div className="flex flex-col">
+                <form className="bg-slate-700 dark:bg-slate-700 p-4 rounded-3xl">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <TextReadInput
+                        label="First Name"
+                        type="text"
+                        name="first_name"
+                        value={member[0]?.first_name || formData?.first_name}
+                        placeholder="First Name"
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div>
+                      <TextReadInput
+                        label="Last Name"
+                        type="text"
+                        name="last_name"
+                        value={member[0]?.last_name || formData?.last_name}
+                        placeholder="Last Name"
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div>
+                      <TextReadInput
+                        label="Prefix"
+                        type="text"
+                        name="prefix"
+                        value={member[0]?.prefix || formData?.prefix}
+                        placeholder="Prefix"
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div>
+                      <TextReadInput
+                        label="Mobile"
+                        type="text"
+                        name="mobile"
+                        value={member[0]?.mobile || formData?.mobile}
+                        placeholder="Mobile"
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <div className="mt-4 px-4 py-2">
+                      <TextReadInput
+                        label="School"
+                        type="text"
+                        name="school"
+                        value={
+                          neonSchoolData?.establishmentName || formData?.school
+                        }
+                        onChange={(e) => {
+                          const query = e.target.value;
+                          setFormData({ ...formData, school: query });
+                        }}
+                      />
+                    </div>
+                  </div>
 
-            {formData.school && formData.school.length > 0 && (
-              <div>
-                <ul className="border mt-2">
-                  {schools
-                    .filter((school) =>
-                      school.establishmentName
-                        .toLowerCase()
-                        .includes(formData.school.toLowerCase())
-                    )
-                    .slice(0, 10)
-                    .map((school) => (
-                      <li
-                        key={school.Id}
-                        onClick={() => handleSchoolSelection(school)}
-                        className="p-2 hover:bg-gray-100 cursor-pointer"
+                  {formData.school && formData.school.length > 0 && (
+                    <div>
+                      <ul className="border mt-2">
+                        {schools
+                          .filter((school) =>
+                            school.establishmentName
+                              .toLowerCase()
+                              .includes(formData.school.toLowerCase())
+                          )
+                          .slice(0, 10)
+                          .map((school) => (
+                            <li
+                              key={school.Id}
+                              onClick={() => handleSchoolSelection(school)}
+                              className="p-2 hover:bg-gray-100 cursor-pointer"
+                            >
+                              {school.establishmentName} - {school.town}
+                            </li>
+                          ))}
+                      </ul>
+
+                      <button
+                        className="bg-red-600 text-lg text-white px-3 py-2 rounded mt-3 m-2"
+                        onClick={handleCancelSearchClick}
                       >
-                        {school.establishmentName} - {school.town}
-                      </li>
-                    ))}
-                </ul>
-                <button
-                  className="bg-red-600 text-lg text-white px-3 py-2 rounded mt-3 m-2"
-                  onClick={handleCancelSearchClick}
-                >
-                  Cancel Input
-                </button>
+                        Cancel Input
+                      </button>
+                    </div>
+                  )}
+
+                  <div className="flex justify-center">
+                    <button
+                      type="submit"
+                      className="bg-calibre-citrus text-2xl text-white px-3 py-2 rounded-full mt-3 m-2"
+                      onClick={handleSubmit}
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </form>
               </div>
-            )}
-            <button
-              type="submit"
-              className="bg-blue-600 text-lg text-white px-3 py-2 rounded mt-3 m-2"
-              onClick={handleSubmit}
-            >
-              Submit
-            </button>
-          </form>
+            </div>
+          </div>
           <div className="flex justify-between"></div>
         </div>
         <div>

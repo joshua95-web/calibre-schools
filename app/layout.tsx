@@ -8,7 +8,11 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body>{children}</body>
+        <body
+          className={`h-screen bg-slate-100 text-slate-900 dark:bg-slate-900 dark:text-slate-50`}
+        >
+          {children}
+        </body>
       </html>
     </ClerkProvider>
   );
