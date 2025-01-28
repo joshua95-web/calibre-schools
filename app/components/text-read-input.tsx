@@ -20,7 +20,7 @@ export default function TextReadInput({
           id={name}
           defaultValue={value}
           onChange={onChange}
-          className="block w-full rounded-md border-indigo-300 focus:border-amber-500 focus:ring-amber-500 bg-amber-50 dark:bg-amber-100 text-slate-900 dark:text-slate-50 sm:text-sm p-1"
+          className="block w-full rounded-md border-indigo-300 focus:border-amber-500 focus:ring-amber-500 bg-amber-50 dark:bg-amber-100 text-slate-900 dark:text-slate-600 sm:text-sm p-1"
           placeholder={placeholder}
         />
       </div>

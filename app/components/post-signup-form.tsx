@@ -177,7 +177,7 @@ export default function PostSignupForm({
 
                   {formData.school && formData.school.length > 0 && (
                     <div>
-                      <ul className="border mt-2">
+                      <ul className="border-slate-300 text-sm bg-slate-50 mt-2">
                         {schools
                           .filter((school) =>
                             school.establishmentName
@@ -197,7 +197,7 @@ export default function PostSignupForm({
                       </ul>
 
                       <button
-                        className="bg-red-600 text-lg text-white px-3 py-2 rounded mt-3 m-2"
+                        className="bg-red-600 text-lg text-white px-3 py-2 rounded-full mt-3 m-2"
                         onClick={handleCancelSearchClick}
                       >
                         Cancel Input
