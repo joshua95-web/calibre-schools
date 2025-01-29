@@ -98,6 +98,7 @@ export async function sendSchoolData(email: string, formData: FormData) {
     )
     RETURNING id;
     `;
+
       const existingMemberSchool = await sql`
     SELECT id
     FROM member_school

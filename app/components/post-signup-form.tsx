@@ -33,12 +33,15 @@ export default function PostSignupForm({
     schoolData: null as schoolImport | null,
   });
 
+  const [showSchoolResults, setShowSchoolResults] = useState(false);
+
   const handleCancelSearchClick = () => {
     setFormData({
       ...formData,
       school: "",
       schoolData: null,
     });
+    setShowSchoolResults(false);
   };
 
   const [schools, setSchools] = useState<schoolImport[]>([]);
@@ -59,6 +62,10 @@ export default function PostSignupForm({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (name === "school") {
+      setShowSchoolResults(true);
+    }
   };
 
   const handleSchoolSelection = (school: schoolImport) => {
@@ -67,6 +74,8 @@ export default function PostSignupForm({
       school: school.establishmentName,
       schoolData: school,
     }));
+
+    setShowSchoolResults(false);
   };
 
   // get clerk user details
@@ -164,18 +173,17 @@ export default function PostSignupForm({
                         label="School"
                         type="text"
                         name="school"
-                        value={
-                          neonSchoolData?.establishmentName || formData?.school
-                        }
+                        value={formData?.school}
                         onChange={(e) => {
-                          const query = e.target.value;
-                          setFormData({ ...formData, school: query });
+                          handleChange(e);
                         }}
                       />
                     </div>
                   </div>
 
-                  {formData.school && formData.school.length > 0 && (
+                  {/* This bit only shows the dropdown if the showSchoolResults state is true */}
+
+                  {showSchoolResults && formData.school.length > 0 && (
                     <div>
                       <ul className="border-slate-300 text-sm bg-slate-50 mt-2">
                         {schools
