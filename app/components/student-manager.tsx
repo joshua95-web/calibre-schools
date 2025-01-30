@@ -62,7 +62,7 @@ export default function StudentManager({
   if (teacherMemberId) {
     return (
       <div>
-        <div className="text-3xl text-black font-sans">
+        <div className="text-3xl text-black dark:text-white font-sans">
           <h1>Your Students</h1>
           <p className="text-lg p-3 text-slate-500">No students yet...</p>
           <div className="flex justify-normal">
