@@ -43,8 +43,8 @@ export default async function SchoolAdminDashboard() {
   }
 
   // page protection
-  const isAdmin = await checkRole("org:admin");
-  if (!isAdmin) {
+  const isSchoolAdmin = await checkRole("school_admin");
+  if (!isSchoolAdmin) {
     redirect("/");
   }
   console.log("teacherMemberId:", teacherMemberId, "schoolId:", school_id);

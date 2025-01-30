@@ -4,8 +4,10 @@ import { SignOutButton, useOrganizationList } from "@clerk/nextjs";
 import TextReadInput from "./text-read-input";
 import { sendSchoolData } from "../actions/sendSchoolData";
 import { sendMemberData } from "../actions/sendMemberData";
-
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { useUser } from "@clerk/nextjs";
+import { setSchoolAdmin } from "../actions/setSchoolAdmin";
+import { useRouter } from "next/navigation";
 
 interface PostSignupFormProps {
   member: [
@@ -32,6 +34,10 @@ export default function PostSignupForm({
     school: "", // This is a string to store the school name
     schoolData: null as schoolImport | null,
   });
+
+  const router = useRouter();
+
+  // SCHOOL SEARCH
 
   const [showSchoolResults, setShowSchoolResults] = useState(false);
 
@@ -78,7 +84,9 @@ export default function PostSignupForm({
     setShowSchoolResults(false);
   };
 
-  // get clerk user details
+  // CLERK STUFF
+
+  // const clientUsers = await client.users
 
   const { isLoaded, isSignedIn, user } = useUser();
 
@@ -101,6 +109,7 @@ export default function PostSignupForm({
         const newOrg = createOrganization({
           name: formData.schoolData?.establishmentName || "Default Org Name",
         });
+        setSchoolAdmin();
         console.log("Clerk org created!", newOrg);
       } catch (error) {
         console.error("Clerk org creation failed", error);
@@ -111,6 +120,15 @@ export default function PostSignupForm({
       } catch (error) {
         console.error("School data failed to send to Neon", error);
       }
+    }
+    if (
+      member[0]?.first_name &&
+      member[0]?.last_name &&
+      neonSchoolData?.establishmentName
+    ) {
+      router.push(`/dashboard`);
+    } else {
+      console.log("Data missing!");
     }
   };
 
