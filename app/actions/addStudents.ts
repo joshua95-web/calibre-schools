@@ -19,6 +19,10 @@ export async function addStudent(
   const sql = neon(process.env.DATABASE_URL);
   const student_first_name = formData.student_first_name;
   const student_last_name = formData.student_last_name;
+
+  const existingStudent = await sql `
+  
+  `
 }
 
 try {

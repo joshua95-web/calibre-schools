@@ -17,11 +17,6 @@ export async function sendSchoolData(email: string, formData: FormData) {
   }
   const sql = neon(process.env.DATABASE_URL);
 
-  const first_name = formData.first_name;
-  const last_name = formData.last_name;
-  const prefix = formData.prefix;
-  const mobile = formData.mobile;
-
   try {
     const memberData = await sql`
   SELECT id
@@ -63,7 +58,7 @@ export async function sendSchoolData(email: string, formData: FormData) {
         message: "School already exists in the database, no insert performed",
       };
     } else {
-      const sendSchoolDataResult = await sql`
+      await sql`
     INSERT INTO "school" (
     id,
     la_code,
@@ -98,49 +93,64 @@ export async function sendSchoolData(email: string, formData: FormData) {
     )
     RETURNING id;
     `;
-
-      const existingMemberSchool = await sql`
-    SELECT id
-    FROM member_school
-    WHERE member_id = ${memberData[0].id} AND school_id = ${schoolId}
-  `;
-
-      if (existingMemberSchool.length > 0) {
-        console.log("Member-school association already exists");
-      } else {
-        await sql`
-      INSERT INTO member_school (
-        member_id, school_id, main_contact_id
-      )
-      VALUES (
-        ${memberData[0].id}, -- member_id
-        ${schoolId}, -- school_id
-        ${memberData[0].id} -- main_contact_id
-      )
-    `;
-      }
-
-      // send schoolStaff
+      // 1. SCHOOL_STAFF: Insert or fetch staff ID
+      let staffId: string | undefined;
 
       const existingSchoolStaff = await sql`
-      SELECT id
-      FROM school_staff
-      WHERE email = ${email}
-      `;
+  SELECT id
+  FROM school_staff
+  WHERE email = ${email}
+`;
 
+      // If a staff record already exists, use it.
       if (existingSchoolStaff.length > 0) {
+        staffId = existingSchoolStaff[0].id; // we’ll re-use this existing staff UUID
         console.log("School staff record already exists for this user");
       } else {
+        // Otherwise, insert a new staff record and capture the UUID
         try {
-          // schoolStaff data send
-          await sql`
-        INSERT INTO school_staff (title, first_name, last_name, email, mobile, school_id)
-        VALUES (${prefix}, ${first_name}, ${last_name}, ${email}, ${mobile}, ${sendSchoolDataResult[0].id})
-        `;
+          const [newStaff] = await sql`
+      INSERT INTO school_staff (
+        id, title, first_name, last_name, email, mobile, school_id
+      )
+      VALUES (
+        gen_random_uuid(),      -- or uuid_generate_v4() if you prefer
+        ${formData.prefix}, 
+        ${formData.first_name}, 
+        ${formData.last_name}, 
+        ${email}, 
+        ${formData.mobile}, 
+        ${schoolId}  -- from your earlier insert or from your code
+      )
+      RETURNING id;
+    `;
+          staffId = newStaff.id;
         } catch (error) {
-          console.error("Error updating school_staff: ", error);
+          console.error("Error inserting new school_staff:", error);
+          throw error; // or handle however you like
         }
       }
+
+      // 2. MEMBER_SCHOOL: Now insert, referencing staffId in main_contact_id
+      //    (Only do this if we *did* get a valid staffId)
+      if (!staffId) {
+        throw new Error(
+          "No staffId found or created; cannot create member_school record"
+        );
+      }
+
+      await sql`
+  INSERT INTO member_school (
+    member_id, 
+    school_id, 
+    main_contact_id
+  )
+  VALUES (
+    ${memberData[0].id}, 
+    ${schoolId}, 
+    ${staffId}
+  )
+`;
     }
 
     console.log("School and member-school join data sent successfully");
