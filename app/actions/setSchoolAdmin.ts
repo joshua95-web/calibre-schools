@@ -19,6 +19,9 @@ export async function setSchoolAdmin() {
     return { success: true };
   } catch (error) {
     console.error("Error updating user metadata:", error);
-    return { success: false, error };
+    return {
+      success: false,
+      error: (error as Error).message || "Unknown error",
+    };
   }
 }

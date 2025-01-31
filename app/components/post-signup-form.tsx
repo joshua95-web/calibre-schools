@@ -4,7 +4,6 @@ import { SignOutButton, useOrganizationList } from "@clerk/nextjs";
 import TextReadInput from "./text-read-input";
 import { sendSchoolData } from "../actions/sendSchoolData";
 import { sendMemberData } from "../actions/sendMemberData";
-import { auth, clerkClient } from "@clerk/nextjs/server";
 import { useUser } from "@clerk/nextjs";
 import { setSchoolAdmin } from "../actions/setSchoolAdmin";
 import { useRouter } from "next/navigation";
@@ -99,37 +98,45 @@ export default function PostSignupForm({
 
   const email = user?.emailAddresses[0]?.emailAddress ?? "No email";
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    sendMemberData(email, formData);
-    if (!formData.schoolData || !formData.schoolData.establishmentName) {
-      throw new Error("School data is missing");
-    } else {
-      try {
-        const newOrg = createOrganization({
-          name: formData.schoolData?.establishmentName || "Default Org Name",
-        });
-        setSchoolAdmin();
-        console.log("Clerk org created!", newOrg);
-      } catch (error) {
-        console.error("Clerk org creation failed", error);
+    try {
+      await sendMemberData(email, formData);
+
+      if (!formData.schoolData || !formData.schoolData.establishmentName) {
+        throw new Error("School data is missing");
       }
-      try {
-        sendSchoolData(email, formData);
-        console.log("School data sent to Neon");
-      } catch (error) {
-        console.error("School data failed to send to Neon", error);
+
+      const newOrg = await createOrganization({
+        name: formData.schoolData?.establishmentName || "Default Org Name",
+      });
+
+      console.log("Clerk org created!", newOrg);
+
+      // Ensure the role is updated in Clerk
+      const adminUpdateResponse = await setSchoolAdmin();
+      if (!adminUpdateResponse.success) {
+        console.error(
+          "Failed to update user metadata:",
+          adminUpdateResponse.error
+        );
       }
-    }
-    if (
-      member[0]?.first_name &&
-      member[0]?.last_name &&
-      neonSchoolData?.establishmentName
-    ) {
-      router.push(`/dashboard`);
-    } else {
-      console.log("Data missing!");
+
+      await sendSchoolData(email, formData);
+      console.log("School data sent to Neon");
+
+      if (
+        member[0]?.first_name &&
+        member[0]?.last_name &&
+        neonSchoolData?.establishmentName
+      ) {
+        router.push(`/dashboard`);
+      } else {
+        console.log("Data missing!");
+      }
+    } catch (error) {
+      console.error("Error in handleSubmit:", error);
     }
   };
 
@@ -156,6 +163,16 @@ export default function PostSignupForm({
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <TextReadInput
+                        label="Prefix"
+                        type="text"
+                        name="prefix"
+                        value={member[0]?.prefix || formData?.prefix}
+                        placeholder="Prefix"
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div>
+                      <TextReadInput
                         label="First Name"
                         type="text"
                         name="first_name"
@@ -174,16 +191,7 @@ export default function PostSignupForm({
                         onChange={handleChange}
                       />
                     </div>
-                    <div>
-                      <TextReadInput
-                        label="Prefix"
-                        type="text"
-                        name="prefix"
-                        value={member[0]?.prefix || formData?.prefix}
-                        placeholder="Prefix"
-                        onChange={handleChange}
-                      />
-                    </div>
+
                     <div>
                       <TextReadInput
                         label="Mobile"
