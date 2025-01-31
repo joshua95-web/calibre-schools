@@ -90,26 +90,28 @@ export default function StudentManager({
                   : "max-h-[1000px] overflow-auto"
               } transition-all duration-500 ease-in-out`}
             >
-              <form className="grid grid-cols-2 relative mt-4 space-x-10 divide-slate-200 px-4 sm:px-11">
-                <div className="space-y-3 px-4">
-                  <TextReadInput
-                    label="Student First Name"
-                    type="text"
-                    name="student_first_name"
-                    value={formData?.student_first_name}
-                    placeholder="Student First Name"
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="space-y-3 px-4">
-                  <TextReadInput
-                    label="Student Last Name"
-                    type="text"
-                    name="student_last_name"
-                    value={formData?.student_last_name}
-                    placeholder="Student Last Name"
-                    onChange={handleChange}
-                  />
+              <form className="grid grid-cols-1 relative mt-4 divide-slate-200 px-4 sm:px-11">
+                <div className="flex justify-center">
+                  <div className="space-y-3 max-w-sm px-4">
+                    <TextReadInput
+                      label="Student First Name"
+                      type="text"
+                      name="student_first_name"
+                      value={formData?.student_first_name}
+                      placeholder="Student First Name"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="space-y-3 max-w-sm px-4">
+                    <TextReadInput
+                      label="Student Last Name"
+                      type="text"
+                      name="student_last_name"
+                      value={formData?.student_last_name}
+                      placeholder="Student Last Name"
+                      onChange={handleChange}
+                    />
+                  </div>
                 </div>
                 <div className="grid grid-cols-2">
                   <div className="flex w-80 px-4 py-1">
