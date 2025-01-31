@@ -2,6 +2,7 @@
 
 import { SignInButton, SignOutButton, SignUpButton } from "@clerk/nextjs";
 import { useUser } from "@clerk/nextjs";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 export default function Home() {
   const router = useRouter();
@@ -30,9 +31,18 @@ export default function Home() {
               <div className="relative px-6 py-32 sm:py-40 lg:px-8 lg:py-56 lg:pr-0">
                 <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl">
                   <div className="hidden sm:mb-10 sm:flex"></div>
-                  <h1 className="text-pretty text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
+                  {/* <h1 className="text-pretty text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
                     Calibre Audio Schools Portal
-                  </h1>
+                  </h1> */}
+                  <div className="">
+                    <Image
+                      src="/branding/learning-full.png"
+                      alt="Calibre Learning Full Logo"
+                      width={800}
+                      height={500}
+                      className="h-auto w-auto"
+                    />
+                  </div>
                   <p className="mt-8 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8">
                     Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure
                     qui lorem cupidatat commodo. Elit sunt amet fugiat veniam
