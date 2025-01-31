@@ -8,6 +8,7 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
 import { useUser } from "@clerk/nextjs";
 import { setSchoolAdmin } from "../actions/setSchoolAdmin";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface PostSignupFormProps {
   member: [
@@ -135,14 +136,23 @@ export default function PostSignupForm({
   if (member) {
     return (
       <div>
-        <div className=" text-3xl text-black font-extrabold ">
+        <div className=" text-3xl text-black font-semibold ">
           <div className="flex justify-center">
             <div className="flex-end">
-              <h1 className="text-slate-900 dark:text-slate-200 p-4">
-                We need some more information...
-              </h1>
               <div className="flex flex-col">
-                <form className="bg-slate-700 dark:bg-slate-700 p-4 rounded-3xl">
+                <form className="bg-white shadow-2xl p-4 rounded-3xl">
+                  <h1 className="text-slate-900 px-6">
+                    We need some more information...
+                  </h1>
+                  <div className="flex justify-center m-4 p-4">
+                    <Image
+                      src="/branding/learning-icon-orange.svg"
+                      alt="Calibre Learning Logo"
+                      width={80}
+                      height={80}
+                      className="h-20 w-auto"
+                    />
+                  </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <TextReadInput
