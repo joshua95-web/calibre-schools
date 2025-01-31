@@ -61,16 +61,20 @@ export default function StudentManager({
 
   if (teacherMemberId) {
     return (
-      <div>
-        <div className="text-3xl text-black dark:text-white font-sans">
-          <h1>Your Students</h1>
-          <p className="text-lg p-3 text-slate-500">No students yet...</p>
-          <div className="flex justify-normal">
+      <div className="flex justify-center">
+        <div className="text-3xl text-slate-800 font-sans bg-white shadow-2xl p-4 rounded-md">
+          <div className="flex justify-center">
+            <h1>Your Students</h1>
+          </div>
+          <div className="flex justify-center">
+            <p className="text-lg p-3 text-slate-600">No students yet...</p>
+          </div>
+          <div className="flex flex-col">
             {/* hide this form until they click 
           a big plus button */}
-            <div className="flex justify-left mt-5  text-white text-lg font-semibold">
+            <div className="flex justify-center mt-5  text-white text-lg font-semibold">
               <button
-                className=" bg-amber-500 w-40 h-20 rounded-full"
+                className=" bg-slate-600 w-40 h-20 rounded-full"
                 onClick={ToggleVisibility}
               >
                 <div className="flex justify-center m-1">Add a Student...</div>
@@ -86,7 +90,7 @@ export default function StudentManager({
                   : "max-h-[1000px] overflow-auto"
               } transition-all duration-500 ease-in-out`}
             >
-              <form className=" flex justify-left relative mt-4 space-x-10 divide-x divide-slate-200 px-4 sm:px-11">
+              <form className="grid grid-cols-2 relative mt-4 space-x-10 divide-slate-200 px-4 sm:px-11">
                 <div className="space-y-3 px-4">
                   <TextReadInput
                     label="Student First Name"
@@ -111,14 +115,14 @@ export default function StudentManager({
                   <div className="flex w-80 px-4 py-1">
                     <button
                       type="submit"
-                      className="bg-amber-500 text-lg text-white px-3 py-2 rounded-full mt-3 m-2"
+                      className="bg-amber-500 text-lg text-white px-3 py-2 rounded-lg mt-3 m-2"
                       onClick={handleSubmit}
                     >
                       Add Student
                     </button>
                     <div className="flex justify-end">
                       <button
-                        className="bg-red-800 text-sm text-white px-3 py-2 rounded-full mt-3 m-2"
+                        className="bg-slate-500 text-lg text-white px-3 py-2 rounded-lg mt-3 m-2"
                         onClick={handleCancelInputClick}
                       >
                         Cancel Input
