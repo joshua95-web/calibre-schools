@@ -115,7 +115,7 @@ export default function PostSignupForm({
       console.log("Clerk org created!", newOrg);
 
       // Ensure the role is updated in Clerk
-      const adminUpdateResponse = await setSchoolAdmin();
+      const adminUpdateResponse = await setSchoolAdmin(user.id);
       if (!adminUpdateResponse.success) {
         console.error(
           "Failed to update user metadata:",

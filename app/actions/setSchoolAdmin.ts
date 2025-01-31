@@ -1,27 +1,30 @@
 "use server";
-import { clerkClient } from "@clerk/nextjs/server";
-import { auth } from "@clerk/nextjs/server";
 
-export async function setSchoolAdmin() {
-  const { userId } = await auth();
+export async function setSchoolAdmin(userId: string) {
+  const CLERK_SECRET_KEY = process.env.CLERK_SECRET_KEY;
 
-  if (!userId) {
-    throw new Error("Unauthorised: No user ID found");
+  if (!CLERK_SECRET_KEY) {
+    throw new Error("No Clerk secret key found");
   }
 
-  try {
-    await clerkClient.users.updateUserMetadata(userId, {
-      publicMetaData: {
-        role: "school_admin",
+  const response = await fetch(
+    `https://api.clerk.com/v1/users/${userId}/metadata`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${CLERK_SECRET_KEY}`,
+        "Content-Type": "application/json",
       },
-    });
-
-    return { success: true };
-  } catch (error) {
-    console.error("Error updating user metadata:", error);
-    return {
-      success: false,
-      error: (error as Error).message || "Unknown error",
-    };
+      body: JSON.stringify({
+        public_metadata: {
+          role: "school_admin",
+        },
+      }),
+    }
+  );
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(`Failed to update user role: ${JSON.stringify(errorData)}`);
   }
+  return response.json();
 }
