@@ -74,7 +74,7 @@ export default async function SchoolAdminDashboard() {
         </div>
       </div>
       <div className="flex justify-left py-10">
-        <div className="bg-fuchsia-700 px-2 py-2 rounded-3xl text-white font-semibold">
+        <div className="bg-fuchsia-700 px-2 py-2 hover:bg-fuchsia-500 rounded-3xl text-white font-semibold">
           <SignOutButton />
         </div>
       </div>
