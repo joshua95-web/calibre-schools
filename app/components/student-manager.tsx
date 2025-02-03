@@ -163,7 +163,7 @@ export default function StudentManager({
                       name="school_year"
                       value={formData.school_year}
                       onChange={handleSchoolYearChange}
-                      className="mt-1 block w-full rounded-md border-slate-300 shadow-sm"
+                      className="block w-full rounded-md border-indigo-300 focus:border-amber-500 bg-indigo-100 text-slate-500 sm:text-sm p-1"
                     >
                       <option value="">Select a school year</option>
                       <option value="Reception"></option>
