@@ -78,6 +78,7 @@ export default async function SchoolAdminDashboard() {
           <SignOutButton />
         </div>
       </div>
+
       <div>
         Clerk data
         <pre>{JSON.stringify(user, null, 2)}</pre>;

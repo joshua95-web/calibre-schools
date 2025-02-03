@@ -154,7 +154,7 @@ export default function StudentManager({
                   <div className="space-y-3 max-w-sm px-4">
                     <label
                       htmlFor="school_year"
-                      className="block text-sm font-medium text-slate-700"
+                      className="block text-sm font-semibold text-slate-900"
                     >
                       School Year
                     </label>
@@ -222,6 +222,10 @@ export default function StudentManager({
                   </div>
                 </div>
               </form>
+              <div>
+                Full form data
+                <pre>{JSON.stringify(formData, null, 2)}</pre>;
+              </div>
             </div>
           </div>
         </div>
