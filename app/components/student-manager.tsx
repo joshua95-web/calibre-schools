@@ -30,44 +30,6 @@ export default function StudentManager({
     student_date_of_birth: "",
   });
 
-  // school year and age stuff
-
-  // school year to lower bound age (maybe higher one for turning 18? Or not?)
-  // const schoolYearToAge: Record<string, number> = {
-  //   Reception: 4,
-  //   "Year 1": 5,
-  //   "Year 2": 6,
-  //   "Year 3": 7,
-  //   "Year 4": 8,
-  //   "Year 5": 9,
-  //   "Year 6": 10,
-  //   "Year 7": 11,
-  //   "Year 8": 12,
-  //   "Year 9": 13,
-  //   "Year 10": 14,
-  //   "Year 11": 15,
-  //   "Year 12": 16,
-  //   "Year 13": 17,
-  // };
-
-  // const handleSchoolYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  //   const school_year = e.target.value;
-
-  //   const age = schoolYearToAge[school_year];
-  //   if (age) {
-  //     const currentYear = new Date().getFullYear();
-
-  //     const birthYear = currentYear - age;
-
-  //     const approximate_dob = `${birthYear}-00-00`;
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       school_year: "",
-  //       approximate_dob: "",
-  //     }));
-  //   }
-  // };
-
   console.log(
     "I'm a console log inside the student manager component. This user's schoolID is ",
     schoolId
@@ -170,7 +132,10 @@ export default function StudentManager({
                       onChange={handleChange}
                     />
                   </div>
-                  <div className="space-y-3 max-w-sm px-4">
+                  <div className="max-w-sm px-4">
+                    <div className="block text-sm font-semibold text-slate-900">
+                      <p>Student&apos;s Date of Birth</p>
+                    </div>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
                         label="Select Date of Birth"
