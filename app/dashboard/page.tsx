@@ -17,6 +17,7 @@ export default async function SchoolAdminDashboard() {
   const teacherMemberId = member?.[0]?.mem_number ?? null;
   const neonSchoolData = member ? await getNeonSchoolData(emailAddress) : null;
   const school_id = neonSchoolData?.[0]?.school_id ?? null;
+  const staffId = neonSchoolData?.[0]?.staff_id ?? null;
 
   if (
     (!member[0].first_name && !member[0].last_name) ||
@@ -67,6 +68,7 @@ export default async function SchoolAdminDashboard() {
             {/* make a pupil list component and an add-pupil component for here */}
             <StudentManager
               teacherMemberId={teacherMemberId}
+              staffId={staffId}
               schoolId={school_id}
             />
             {/* <div className="bg-slate-600 text-white mx-80 py-2 px-3"></div> */}

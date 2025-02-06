@@ -85,7 +85,7 @@ export default function StudentManager({
     setIsHidden(!isHidden);
   };
 
-  console.log("Main contact ID: ", teacherMemberId);
+  console.log("Main Contact ID: ", staffId);
 
   if (teacherMemberId) {
     return (
@@ -141,7 +141,7 @@ export default function StudentManager({
                     />
                   </div>
                   <div className="max-w-sm px-4">
-                    <div className="block text-sm font-semibold text-slate-900">
+                    <div className="block text-sm font-semibold text-slate-900 mb-4">
                       <p>Student&apos;s Date of Birth</p>
                     </div>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
