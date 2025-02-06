@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TextReadInput from "./text-read-input";
 import { FaPlusCircle } from "react-icons/fa";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -7,6 +7,13 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
 import { addStudent } from "../actions/addStudents";
+import { getStudent } from "../actions/getStudents";
+
+interface studentList {
+  mem_number: string;
+  first_name: string;
+  last_name: string;
+}
 
 interface StudentManagerProps {
   teacherMemberId: string;
@@ -37,6 +44,24 @@ export default function StudentManager({
     "I'm a console log inside the student manager component. This user's schoolID is ",
     schoolId
   );
+
+  const [studentList, setStudentList] = useState<studentList[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const students = await getStudent(schoolId);
+        setStudentList(students);
+      } catch (err) {
+        console.error("Error fetching students:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStudents();
+  }, [schoolId]);
 
   const handleDateChange = (date: Dayjs | null) => {
     if (date) {
@@ -98,9 +123,26 @@ export default function StudentManager({
           <div className="flex justify-center">
             <h1>Your Students</h1>
           </div>
-          <div className="flex justify-center">
-            <p className="text-lg p-3 text-slate-600">No students yet...</p>
-          </div>
+          {!studentList ? (
+            <div className="flex justify-center">
+              <p className="text-lg p-3 text-slate-600">No students yet...</p>
+            </div>
+          ) : (
+            <div className="block text-sm font-semibold text-slate-900 mb-4">
+              <div>
+                Students
+                <pre>{JSON.stringify(studentList, null, 2)}</pre>;
+              </div>
+              <ul>
+                {studentList.map((student) => (
+                  <li key={student.mem_number}>
+                    {student.first_name} {student.last_name} (
+                    {student.mem_number})
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           <div className="flex flex-col">
             {/* hide this form until they click 
           a big plus button */}
