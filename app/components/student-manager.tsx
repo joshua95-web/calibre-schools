@@ -63,20 +63,24 @@ export default function StudentManager({
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      addStudent(staffId, schoolId, formData);
+      await addStudent(staffId, schoolId, formData);
+      console.log("Student added successfully");
+
+      setFormData({
+        ...formData,
+        student_first_name: "",
+        student_last_name: "",
+        student_date_of_birth: "",
+      });
+
+      console.log("formData has been cleared");
     } catch (error: unknown) {
       return { ok: false, error: error as Error };
     }
-
-    console.log(
-      "addStudent server action initiated using the following data: ",
-      formData,
-      staffId
-    );
   };
 
   const [isHidden, setIsHidden] = useState(true);
@@ -172,10 +176,10 @@ export default function StudentManager({
                     </div>
                   </div>
                 </div>
-                <div>
+                {/* <div>
                   Full form data
                   <pre>{JSON.stringify(formData, null, 2)}</pre>;
-                </div>
+                </div> */}
               </form>
             </div>
           </div>
