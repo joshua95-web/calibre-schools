@@ -2,6 +2,10 @@
 import { useState } from "react";
 import TextReadInput from "./text-read-input";
 import { FaPlusCircle } from "react-icons/fa";
+import { DatePicker } from "@mui/x-date-pickers";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { Dayjs } from "dayjs";
 
 interface StudentManagerProps {
   teacherMemberId: string;
@@ -23,51 +27,63 @@ export default function StudentManager({
     student_last_name:
       //student?.last_name ??
       "",
-    approximate_dob: "",
+    student_date_of_birth: "",
   });
 
   // school year and age stuff
 
   // school year to lower bound age (maybe higher one for turning 18? Or not?)
-  const schoolYearToAge: Record<string, number> = {
-    Reception: 4,
-    "Year 1": 5,
-    "Year 2": 6,
-    "Year 3": 7,
-    "Year 4": 8,
-    "Year 5": 9,
-    "Year 6": 10,
-    "Year 7": 11,
-    "Year 8": 12,
-    "Year 9": 13,
-    "Year 10": 14,
-    "Year 11": 15,
-    "Year 12": 16,
-    "Year 13": 17,
-  };
+  // const schoolYearToAge: Record<string, number> = {
+  //   Reception: 4,
+  //   "Year 1": 5,
+  //   "Year 2": 6,
+  //   "Year 3": 7,
+  //   "Year 4": 8,
+  //   "Year 5": 9,
+  //   "Year 6": 10,
+  //   "Year 7": 11,
+  //   "Year 8": 12,
+  //   "Year 9": 13,
+  //   "Year 10": 14,
+  //   "Year 11": 15,
+  //   "Year 12": 16,
+  //   "Year 13": 17,
+  // };
 
-  const handleSchoolYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const school_year = e.target.value;
+  // const handleSchoolYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //   const school_year = e.target.value;
 
-    const age = schoolYearToAge[school_year];
-    if (age) {
-      const currentYear = new Date().getFullYear();
+  //   const age = schoolYearToAge[school_year];
+  //   if (age) {
+  //     const currentYear = new Date().getFullYear();
 
-      const birthYear = currentYear - age;
+  //     const birthYear = currentYear - age;
 
-      const approximate_dob = `${birthYear}-00-00`;
-      setFormData((prev) => ({
-        ...prev,
-        school_year: "",
-        approximate_dob: "",
-      }));
-    }
-  };
+  //     const approximate_dob = `${birthYear}-00-00`;
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       school_year: "",
+  //       approximate_dob: "",
+  //     }));
+  //   }
+  // };
 
   console.log(
     "I'm a console log inside the student manager component. This user's schoolID is ",
     schoolId
   );
+
+  const handleDateChange = (date: Dayjs | null) => {
+    if (date) {
+      const formattedDate = date.format("YYYY/MM/DD");
+      setFormData((prev) => ({
+        ...prev,
+        student_date_of_birth: formattedDate,
+      }));
+      console.log("Selected Date:", formattedDate);
+    }
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -78,11 +94,14 @@ export default function StudentManager({
       ...formData,
       student_first_name: "",
       student_last_name: "",
+      student_date_of_birth: "",
     });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // check all fields are complete and print message if not
 
     // addStudent(teacherMemberId, schoolId, formData)
 
@@ -152,56 +171,15 @@ export default function StudentManager({
                     />
                   </div>
                   <div className="space-y-3 max-w-sm px-4">
-                    <label
-                      htmlFor="school_year"
-                      className="block text-sm font-semibold text-slate-900"
-                    >
-                      School Year
-                    </label>
-                    <select
-                      id="school_year"
-                      name="school_year"
-                      value={formData.school_year}
-                      onChange={handleSchoolYearChange}
-                      className="block w-full rounded-md border-indigo-300 focus:border-amber-500 bg-indigo-100 text-slate-500 sm:text-sm p-1"
-                    >
-                      <option value="">Select a school year</option>
-                      <option value="Reception"></option>
-                      <option value="Year 1">Year 1</option>
-                      <option value="Year 2">Year 2</option>
-                      <option value="Year 3">Year 3</option>
-                      <option value="Year 4">Year 4</option>
-                      <option value="Year 5">Year 5</option>
-                      <option value="Year 6">Year 6</option>
-                      <option value="Year 7">Year 7</option>
-                      <option value="Year 8">Year 8</option>
-                      <option value="Year 9">Year 9</option>
-                      <option value="Year 10">Year 10</option>
-                      <option value="Year 11">Year 11</option>
-                      <option value="Year 12">Year 12</option>
-                      <option value="Year 13">Year 13</option>
-                    </select>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        label="Select Date of Birth"
+                        onChange={handleDateChange}
+                      />
+                    </LocalizationProvider>
                   </div>
                 </div>
-                {formData.approximate_dob && (
-                  <div className="flex justify-center mt-4">
-                    <div className="space-y-3 max-w-sm px-4">
-                      <label
-                        htmlFor="approximate_dob"
-                        className="block text-sm font-medium text-slate-700"
-                      >
-                        Approximate Year of Birth
-                      </label>
-                      <input
-                        id="approximate_dob"
-                        name="approximate_dob"
-                        type="text"
-                        readOnly
-                        value={formData.approximate_dob}
-                      />
-                    </div>
-                  </div>
-                )}
+
                 <div className="grid grid-cols-2">
                   <div className="flex w-80 px-4 py-1">
                     <button

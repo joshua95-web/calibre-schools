@@ -10,9 +10,13 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^6.0.2",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@headlessui/react": "^2.2.0",
+    "@mui/x-date-pickers": "^7.25.0",
     "@neondatabase/serverless": "^0.10.1",
     "@theinternetfolks/snowflake": "^1.3.0",
+    "dayjs": "^1.11.13",
     "dotenv": "^16.4.5",
     "next": "14.2.16",
     "react": "^18",
