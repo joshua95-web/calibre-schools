@@ -23,7 +23,8 @@ export async function getNeonSchoolData(emailAddress: string) {
     s.postcode,
     s.school_website,
     s.telephone,
-    s.establishment_name
+    s.establishment_name,
+    ss.id as staff_id
     FROM school s
     JOIN school_staff ss ON s.id = ss.school_id
     WHERE ss.email = ${emailAddress}

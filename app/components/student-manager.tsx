@@ -6,15 +6,18 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
+import { addStudent } from "../actions/addStudents";
 
 interface StudentManagerProps {
   teacherMemberId: string;
   schoolId: string;
+  staffId: string;
 }
 
 export default function StudentManager({
   teacherMemberId,
   schoolId,
+  staffId,
 }: StudentManagerProps) {
   const [formData, setFormData] = useState({
     // member data for the student retrieved via member_school table, drill
@@ -63,13 +66,16 @@ export default function StudentManager({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // check all fields are complete and print message if not
-
-    // addStudent(teacherMemberId, schoolId, formData)
+    try {
+      addStudent(staffId, schoolId, formData);
+    } catch (error: unknown) {
+      return { ok: false, error: error as Error };
+    }
 
     console.log(
-      "addStudent server action will be initiated using the following data: ",
-      formData
+      "addStudent server action initiated using the following data: ",
+      formData,
+      staffId
     );
   };
 
@@ -78,6 +84,8 @@ export default function StudentManager({
   const ToggleVisibility = () => {
     setIsHidden(!isHidden);
   };
+
+  console.log("Main contact ID: ", teacherMemberId);
 
   if (teacherMemberId) {
     return (
@@ -164,11 +172,11 @@ export default function StudentManager({
                     </div>
                   </div>
                 </div>
+                <div>
+                  Full form data
+                  <pre>{JSON.stringify(formData, null, 2)}</pre>;
+                </div>
               </form>
-              <div>
-                Full form data
-                <pre>{JSON.stringify(formData, null, 2)}</pre>;
-              </div>
             </div>
           </div>
         </div>

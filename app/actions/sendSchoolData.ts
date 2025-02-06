@@ -33,17 +33,6 @@ export async function sendSchoolData(email: string, formData: FormData) {
 
     const schoolData = formData.schoolData;
 
-    //   const existingJoin = await sql`
-    // SELECT id
-    // FROM school_staff
-    // WHERE member_id = ${memberId}
-    // LIMIT 1;
-    // `;
-
-    //   if (existingJoin.length > 0) {
-    //     throw new Error("This user is already associated with a school");
-    //   } else {
-
     const schoolId = Snowflake.generate({ timestamp: Date.now() });
 
     const existingSchool = await sql`
