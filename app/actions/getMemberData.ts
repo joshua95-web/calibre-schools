@@ -10,6 +10,7 @@ export async function getMemberData(emailAddress: string) {
 
   const memberData = await sql`
     SELECT
+    id,
     mem_number,
     first_name,
     last_name,

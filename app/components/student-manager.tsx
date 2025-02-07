@@ -16,12 +16,14 @@ interface studentList {
 }
 
 interface StudentManagerProps {
+  teacherMemberNumber: string;
   teacherMemberId: string;
   schoolId: string;
   staffId: string;
 }
 
 export default function StudentManager({
+  teacherMemberNumber,
   teacherMemberId,
   schoolId,
   staffId,
@@ -42,7 +44,11 @@ export default function StudentManager({
 
   console.log(
     "I'm a console log inside the student manager component. This user's schoolID is ",
-    schoolId
+    schoolId,
+    "the teacherMemberNumber is ",
+    teacherMemberNumber,
+    "and the teacherMemberId is ",
+    teacherMemberId
   );
 
   const [studentList, setStudentList] = useState<studentList[]>([]);
@@ -51,7 +57,7 @@ export default function StudentManager({
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const students = await getStudent(schoolId);
+        const students = await getStudent(schoolId, teacherMemberId);
         setStudentList(students);
       } catch (err) {
         console.error("Error fetching students:", err);
@@ -61,7 +67,7 @@ export default function StudentManager({
     };
 
     fetchStudents();
-  }, [schoolId]);
+  }, [schoolId, teacherMemberId]);
 
   const handleDateChange = (date: Dayjs | null) => {
     if (date) {
@@ -116,7 +122,7 @@ export default function StudentManager({
 
   console.log("Main Contact ID: ", staffId);
 
-  if (teacherMemberId) {
+  if (teacherMemberNumber) {
     return (
       <div className="flex justify-center">
         <div className="text-3xl text-slate-800 font-sans bg-white shadow-2xl p-4 rounded-md">
@@ -129,10 +135,10 @@ export default function StudentManager({
             </div>
           ) : (
             <div className="block text-sm font-semibold text-slate-900 mb-4">
-              <div>
+              {/* <div>
                 Students
                 <pre>{JSON.stringify(studentList, null, 2)}</pre>;
-              </div>
+              </div> */}
               <ul>
                 {studentList.map((student) => (
                   <li key={student.mem_number}>
@@ -230,8 +236,8 @@ export default function StudentManager({
     );
   } else {
     console.error(
-      "teacherMemberId is not found. Currently, teacherMemberId returns: ",
-      teacherMemberId
+      "teacherMemberNumber is not found. Currently, teacherMemberNumber returns: ",
+      teacherMemberNumber
     );
     <div className="bg-red-700 text-lg">
       No member ID found for current user...

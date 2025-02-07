@@ -2,7 +2,7 @@
 
 import { neon } from "@neondatabase/serverless";
 
-export async function getStudent(schoolId: string) {
+export async function getStudent(schoolId: string, teacherMemberId: string) {
   if (!process.env.DATABASE_URL) {
     throw new Error("DATABASE_URL is not set");
   }
@@ -16,7 +16,8 @@ export async function getStudent(schoolId: string) {
       m.last_name
     FROM member m
     JOIN member_school ms ON m.id = ms.member_id
-    WHERE ms.school_id = ${schoolId};
+    WHERE ms.school_id = ${schoolId}
+    AND ms.member_id != ${teacherMemberId}; -- don't want teachers in this action
     `;
   return studentData;
 }
