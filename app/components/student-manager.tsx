@@ -139,14 +139,24 @@ export default function StudentManager({
                 Students
                 <pre>{JSON.stringify(studentList, null, 2)}</pre>;
               </div> */}
-              <ul>
-                {studentList.map((student) => (
-                  <li key={student.mem_number}>
-                    {student.first_name} {student.last_name} (
-                    {student.mem_number})
-                  </li>
-                ))}
-              </ul>
+              <div>
+                <div className="grid grid-cols-4 font-semibold text-slate-700 border-b pb-2">
+                  <div>First Name</div>
+                  <div>Last Name</div>
+                  <div>Member Number</div>
+                </div>
+                <ul>
+                  {studentList.map((student) => (
+                    <li key={student.mem_number}>
+                      <div className="grid grid-cols-4">
+                        <div>{student.first_name} </div>{" "}
+                        <div>{student.last_name} </div>
+                        <div>{student.mem_number} </div>{" "}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           )}
           <div className="flex flex-col">
