@@ -61,7 +61,9 @@ export default async function SchoolAdminDashboard() {
   );
   return (
     <div>
-      <Navbar memberNumber={teacherMemberNumber} schoolName={schoolName} />
+      <div className="mb-10">
+        <Navbar memberNumber={teacherMemberNumber} schoolName={schoolName} />
+      </div>
       <div>
         <div className="flex justify-left"></div>
         {/* <div className="bg-red-500 font-extrabold flex justify-center text-2xl mx-80 px-9 py-3 rounded-3xl">
@@ -81,11 +83,7 @@ export default async function SchoolAdminDashboard() {
           </div>
         </div>
       </div>
-      <div className="flex justify-left py-10">
-        <div className="bg-fuchsia-700 px-2 py-2 hover:bg-fuchsia-500 rounded-3xl text-white font-semibold">
-          <SignOutButton />
-        </div>
-      </div>
+      <div className="flex justify-left py-10"></div>
 
       <div>
         Clerk data
