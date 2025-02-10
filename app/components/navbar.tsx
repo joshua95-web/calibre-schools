@@ -23,17 +23,23 @@ export default function Navbar({ memberNumber, schoolName }: NavbarProps) {
             />
           </div>
         </div>
-        <div className="absolute left-1/2 transform -translate-x-1/2 flex gap-8">
+        <div className="flex gap-8">
           <div className="flex items-center">
-            <UserButton showName={true} appearance={{}} />
+            <UserButton
+              showName={true}
+              appearance={{
+                variables: {
+                  colorText: "white",
+                },
+              }}
+            />
           </div>
           <div className="flex items-center border border-transparent px-3 py-4 text-base font-semibold">
-            <p>Calibre Member Number: </p>
+            <p>Your Calibre Member Number:</p>
             <span>{memberNumber}</span>
           </div>
           <div className="text-right block border border-transparent px-3 py-4 text-base font-semibold">
-            {" "}
-            <div className="flex text-lg bg-slate-700 p-2 rounded-md">
+            <div className="flex items-center gap-2 text-lg bg-slate-700 p-2 rounded-md">
               <IoSchool /> <h1>{schoolName}</h1>
             </div>
           </div>
@@ -44,7 +50,6 @@ export default function Navbar({ memberNumber, schoolName }: NavbarProps) {
           </div>
         </div>
       </div>
-
       <div
         className="absolute bottom-[-20px] left-1/2 -translate-x-1/2 w-full h-[80px] opacity-100 blur-xl pointer-events-none"
         aria-hidden={true}
