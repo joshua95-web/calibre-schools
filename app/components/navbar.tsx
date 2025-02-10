@@ -12,6 +12,17 @@ export default function Navbar({ memberNumber, schoolName }: NavbarProps) {
   return (
     <div className="relative">
       <div className="relative z-10 flex items-center justify-between gap-8 px-8 py-4 bg-slate-900 text-slate-100 lg:space-x-12">
+        <div className="flex-1 flex justify-start">
+          <div className=" text-white font-semibold">
+            <Image
+              src="/branding/learning-icon-orange.svg"
+              alt="Calibre Learning Logo"
+              width={56}
+              height={56}
+              className="hw-auto"
+            />
+          </div>
+        </div>
         <div className="absolute left-1/2 transform -translate-x-1/2 flex gap-8">
           <div className="flex items-center">
             <UserButton showName={true} appearance={{}} />
