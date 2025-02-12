@@ -123,13 +123,18 @@ export default function StudentManager({
 
   // deleting a student
 
+  const [selectedStudent, setSelectedStudent] = useState<studentList | null>(
+    null
+  );
+
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   const cancelConfirmDelete = () => {
     setConfirmDelete(false);
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = (student: studentList) => {
+    setSelectedStudent(student);
     setConfirmDelete(true);
   };
 
@@ -156,19 +161,27 @@ export default function StudentManager({
                   Are you sure you want to delete this student?
                 </h1>
               </div>
+              <div className="flex gap-2 justify-center p-5 mb-6 text-lg text-slate-800">
+                <p>{selectedStudent?.first_name}</p>
+                <p>{selectedStudent?.last_name}</p>
+              </div>
               <div className="flex justify-center space-x-4">
-                <button
-                  onClick={handleDeleteStudent}
-                  className="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded"
-                >
-                  Delete Student
-                </button>
-                <button
-                  onClick={cancelConfirmDelete}
-                  className="bg-slate-600 hover:bg-slate-800 text-white px-4 py-2 rounded"
-                >
-                  No, cancel!
-                </button>
+                <div>
+                  <button
+                    onClick={handleDeleteStudent}
+                    className="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded"
+                  >
+                    Delete Student
+                  </button>
+                </div>
+                <div>
+                  <button
+                    onClick={cancelConfirmDelete}
+                    className="bg-slate-600 hover:bg-slate-800 text-white px-4 py-2 rounded"
+                  >
+                    No, cancel!
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -201,7 +214,7 @@ export default function StudentManager({
                           <div>{student.first_name} </div>{" "}
                           <div>{student.last_name} </div>
                           <div>{student.mem_number} </div>{" "}
-                          <button onClick={handleConfirmDelete}>
+                          <button onClick={() => handleConfirmDelete(student)}>
                             <ImBin size={15} style={{ color: "#c82300" }} />
                           </button>
                         </div>
