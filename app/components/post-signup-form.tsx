@@ -146,7 +146,6 @@ export default function PostSignupForm({
         <div className=" text-3xl text-black font-semibold ">
           <div className="flex justify-center">
             <div className="flex-end">
-              <div className="flex flex-col">
                 <form className="bg-white shadow-2xl p-4 rounded-3xl">
                   <h1 className="text-slate-900 px-6">
                     We need some more information...
