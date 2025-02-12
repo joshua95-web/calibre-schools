@@ -8,6 +8,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
 import { addStudent } from "../actions/addStudents";
 import { getStudent } from "../actions/getStudents";
+import { ImBin } from "react-icons/im";
 
 interface studentList {
   mem_number: string;
@@ -120,125 +121,153 @@ export default function StudentManager({
     setIsHidden(!isHidden);
   };
 
+  // deleting a student
+
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
+  const cancelConfirmDelete = () => {
+    setConfirmDelete(false);
+  };
+
+  const handleConfirmDelete = () => {
+    setConfirmDelete(true);
+  };
+
+  const handleDeleteStudent = () => {};
+
   console.log("Main Contact ID: ", staffId);
 
   if (teacherMemberNumber) {
     return (
       <div className="flex justify-center">
-        <div className="text-3xl text-slate-800 font-sans bg-white shadow-2xl p-4 rounded-md">
-          <div className="flex justify-center">
-            <h1>Your Students</h1>
+        {confirmDelete && (
+          <div>
+            <h1>Are you sure you want to delete this student?</h1>
+            <button onClick={handleDeleteStudent}>Delete Student</button>
+            <button onClick={cancelConfirmDelete}>No, cancel!</button>
           </div>
-          {!studentList ? (
-            <div className="flex justify-center">
-              <p className="text-lg p-3 text-slate-600">No students yet...</p>
+        )}
+        <div className={`content ${confirmDelete ? "blurred" : ""}`}>
+          <div className="text-3xl text-slate-800 font-sans bg-white shadow-2xl p-4 rounded-md">
+            <div className="flex justify-center mt-2 mb-6">
+              <h1>Your Students</h1>
             </div>
-          ) : (
-            <div className="block text-sm font-semibold text-slate-900 mb-4">
-              {/* <div>
+            {!studentList ? (
+              <div className="flex justify-center">
+                <p className="text-lg p-3 text-slate-600">No students yet...</p>
+              </div>
+            ) : (
+              <div className="block text-sm font-semibold text-slate-900 mb-4">
+                {/* <div>
                 Students
                 <pre>{JSON.stringify(studentList, null, 2)}</pre>;
               </div> */}
-              <div>
-                <div className="grid grid-cols-4 font-semibold text-slate-700 border-b pb-2">
-                  <div>First Name</div>
-                  <div>Last Name</div>
-                  <div>Member Number</div>
+                <div>
+                  <div className="grid grid-cols-4 font-semibold text-slate-700 border-b pb-2">
+                    <div>First Name</div>
+                    <div>Last Name</div>
+                    <div>Member Number</div>
+                  </div>
+                  <ul>
+                    {studentList.map((student) => (
+                      <li key={student.mem_number}>
+                        <div className="grid grid-cols-4 my-3">
+                          <div>{student.first_name} </div>{" "}
+                          <div>{student.last_name} </div>
+                          <div>{student.mem_number} </div>{" "}
+                          <button onClick={handleConfirmDelete}>
+                            <ImBin size={15} style={{ color: "#c82300" }} />
+                          </button>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <ul>
-                  {studentList.map((student) => (
-                    <li key={student.mem_number}>
-                      <div className="grid grid-cols-4">
-                        <div>{student.first_name} </div>{" "}
-                        <div>{student.last_name} </div>
-                        <div>{student.mem_number} </div>{" "}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
               </div>
-            </div>
-          )}
-          <div className="flex flex-col">
-            {/* hide this form until they click 
+            )}
+            <div className="flex flex-col">
+              {/* hide this form until they click 
           a big plus button */}
-            <div className="flex justify-center mt-5  text-white text-lg font-semibold">
-              <button
-                className=" bg-slate-600 w-40 h-20 rounded-full"
-                onClick={ToggleVisibility}
+              <div className="flex justify-center mt-5  text-white text-lg font-semibold">
+                <button
+                  className=" bg-slate-600 w-40 h-20 rounded-full"
+                  onClick={ToggleVisibility}
+                >
+                  <div className="flex justify-center m-1">
+                    Add a Student...
+                  </div>
+                  <div className="flex justify-center">
+                    <FaPlusCircle size={30} color="white" />
+                  </div>
+                </button>
+              </div>
+              <div
+                className={`${
+                  isHidden
+                    ? "max-h-0 overflow-hidden"
+                    : "max-h-[1000px] overflow-auto"
+                } transition-all duration-500 ease-in-out`}
               >
-                <div className="flex justify-center m-1">Add a Student...</div>
-                <div className="flex justify-center">
-                  <FaPlusCircle size={30} color="white" />
-                </div>
-              </button>
-            </div>
-            <div
-              className={`${
-                isHidden
-                  ? "max-h-0 overflow-hidden"
-                  : "max-h-[1000px] overflow-auto"
-              } transition-all duration-500 ease-in-out`}
-            >
-              <form className="grid grid-cols-1 relative mt-4 divide-slate-200 px-4 sm:px-11">
-                <div className="flex justify-center">
-                  <div className="space-y-3 max-w-sm px-4">
-                    <TextReadInput
-                      label="Student First Name"
-                      type="text"
-                      name="student_first_name"
-                      value={formData?.student_first_name}
-                      placeholder="Student First Name"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="space-y-3 max-w-sm px-4">
-                    <TextReadInput
-                      label="Student Last Name"
-                      type="text"
-                      name="student_last_name"
-                      value={formData?.student_last_name}
-                      placeholder="Student Last Name"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="max-w-sm px-4">
-                    <div className="block text-sm font-semibold text-slate-900 mb-4">
-                      <p>Student&apos;s Date of Birth</p>
-                    </div>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker
-                        label="Select Date of Birth"
-                        onChange={handleDateChange}
+                <form className="grid grid-cols-1 relative mt-4 divide-slate-200 px-4 sm:px-11">
+                  <div className="flex justify-center">
+                    <div className="space-y-3 max-w-sm px-4">
+                      <TextReadInput
+                        label="Student First Name"
+                        type="text"
+                        name="student_first_name"
+                        value={formData?.student_first_name}
+                        placeholder="Student First Name"
+                        onChange={handleChange}
                       />
-                    </LocalizationProvider>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2">
-                  <div className="flex w-80 px-4 py-1">
-                    <button
-                      type="submit"
-                      className="bg-amber-500 text-lg text-white px-3 py-2 rounded-lg mt-3 m-2"
-                      onClick={handleSubmit}
-                    >
-                      Add Student
-                    </button>
-                    <div className="flex justify-end">
-                      <button
-                        className="bg-slate-500 text-lg text-white px-3 py-2 rounded-lg mt-3 m-2"
-                        onClick={handleCancelInputClick}
-                      >
-                        Cancel Input
-                      </button>
+                    </div>
+                    <div className="space-y-3 max-w-sm px-4">
+                      <TextReadInput
+                        label="Student Last Name"
+                        type="text"
+                        name="student_last_name"
+                        value={formData?.student_last_name}
+                        placeholder="Student Last Name"
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="max-w-sm px-4">
+                      <div className="block text-sm font-semibold text-slate-900 mb-4">
+                        <p>Student&apos;s Date of Birth</p>
+                      </div>
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                          label="Select Date of Birth"
+                          onChange={handleDateChange}
+                        />
+                      </LocalizationProvider>
                     </div>
                   </div>
-                </div>
-                {/* <div>
+
+                  <div className="grid grid-cols-2">
+                    <div className="flex w-80 px-4 py-1">
+                      <button
+                        type="submit"
+                        className="bg-amber-500 text-lg text-white px-3 py-2 rounded-lg mt-3 m-2"
+                        onClick={handleSubmit}
+                      >
+                        Add Student
+                      </button>
+                      <div className="flex justify-end">
+                        <button
+                          className="bg-slate-500 text-lg text-white px-3 py-2 rounded-lg mt-3 m-2"
+                          onClick={handleCancelInputClick}
+                        >
+                          Cancel Input
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  {/* <div>
                   Full form data
                   <pre>{JSON.stringify(formData, null, 2)}</pre>;
                 </div> */}
-              </form>
+                </form>
+              </div>
             </div>
           </div>
         </div>
