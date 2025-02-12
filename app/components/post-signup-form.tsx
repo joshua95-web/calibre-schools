@@ -261,8 +261,116 @@ export default function PostSignupForm({
                 </form>
               </div>
             </div>
+            <form className="bg-white shadow-2xl p-4 rounded-3xl">
+              <div className="flex justify-center m-4 p-4">
+                <Image
+                  src="/branding/learning-icon-orange.svg"
+                  alt="Calibre Learning Logo"
+                  width={80}
+                  height={80}
+                  className="h-20 w-auto"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <TextReadInput
+                    label="Prefix"
+                    type="text"
+                    name="prefix"
+                    value={member[0]?.prefix || formData?.prefix}
+                    placeholder="Prefix"
+                    onChange={handleChange}
+                  />
+                </div>
+                <div>
+                  <TextReadInput
+                    label="First Name"
+                    type="text"
+                    name="first_name"
+                    value={member[0]?.first_name || formData?.first_name}
+                    placeholder="First Name"
+                    onChange={handleChange}
+                  />
+                </div>
+                <div>
+                  <TextReadInput
+                    label="Last Name"
+                    type="text"
+                    name="last_name"
+                    value={member[0]?.last_name || formData?.last_name}
+                    placeholder="Last Name"
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div>
+                  <TextReadInput
+                    label="Mobile"
+                    type="text"
+                    name="mobile"
+                    value={member[0]?.mobile || formData?.mobile}
+                    placeholder="Mobile"
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <div>
+                <div className="mt-4 px-4 py-2">
+                  <TextReadInput
+                    label="School"
+                    type="text"
+                    name="school"
+                    value={formData?.school}
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* This bit only shows the dropdown if the showSchoolResults state is true */}
+
+              {showSchoolResults && formData.school.length > 0 && (
+                <div>
+                  <ul className="border-slate-300 text-sm bg-slate-50 dark:text-slate-800 mt-2">
+                    {schools
+                      .filter((school) =>
+                        school.establishmentName
+                          .toLowerCase()
+                          .includes(formData.school.toLowerCase())
+                      )
+                      .slice(0, 10)
+                      .map((school) => (
+                        <li
+                          key={school.Id}
+                          onClick={() => handleSchoolSelection(school)}
+                          className="p-2 hover:bg-gray-100 cursor-pointer"
+                        >
+                          {school.establishmentName} - {school.town}
+                        </li>
+                      ))}
+                  </ul>
+
+                  <button
+                    className="bg-red-600 text-lg text-white px-3 py-2 rounded-full mt-3 m-2"
+                    onClick={handleCancelSearchClick}
+                  >
+                    Cancel Input
+                  </button>
+                </div>
+              )}
+
+              <div className="flex justify-center">
+                <button
+                  type="submit"
+                  className="bg-calibre-citrus text-2xl text-white px-3 py-2 rounded-full mt-3 m-2"
+                  onClick={handleSubmit}
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
           </div>
-          <div className="flex justify-between"></div>
         </div>
         <div>
           <SignOutButton />
@@ -285,7 +393,7 @@ export default function PostSignupForm({
           Neon School Data
           <pre>{JSON.stringify(neonSchoolData, null, 2)}</pre>
         </div>
-      </div>
+      </main>
     );
   }
 }

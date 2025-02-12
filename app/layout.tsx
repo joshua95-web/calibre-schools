@@ -12,7 +12,7 @@ export default function RootLayout({
           <link rel="icon" href="/favicon.ico" sizes="any" />
         </head>
         <body
-          className={`h-screen bg-slate-100 text-slate-900 dark:bg-slate-900 dark:text-slate-50`}
+          className={`h-screen bg-slate-50 text-slate-800 dark:bg-slate-800 dark:text-slate-50`}
         >
           {children}
         </body>
