@@ -20,6 +20,7 @@ export default function TextReadInput({
           id={name}
           value={value}
           onChange={onChange}
+          maxLength={64}
           className="block w-full rounded-md border py-1.5 border-slate-600 focus:ring-2 focus:ring-inset bg-white text-slate-800 sm:text-sm p-1"
           placeholder={placeholder}
         />
