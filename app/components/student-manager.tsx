@@ -8,6 +8,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
 import { addStudent } from "../actions/addStudents";
 import { getStudent } from "../actions/getStudents";
+import { deleteStudent } from "../actions/deleteStudent";
 import { ImBin } from "react-icons/im";
 
 interface studentList {
@@ -138,7 +139,10 @@ export default function StudentManager({
     setConfirmDelete(true);
   };
 
-  const handleDeleteStudent = () => {};
+  const handleDeleteStudent = async (student) => {
+    const memberNumber = student?.mem_number;
+    await deleteStudent(memberNumber);
+  };
 
   console.log("Main Contact ID: ", staffId);
 
