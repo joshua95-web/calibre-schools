@@ -140,8 +140,15 @@ export default function StudentManager({
   };
 
   const handleDeleteStudent = async (student) => {
+    if (!student?.mem_number) {
+      console.error("No member number found for deletion");
+      return;
+    }
     const memberNumber = student?.mem_number;
-    await deleteStudent(memberNumber);
+    const response = await deleteStudent(memberNumber);
+    console.log("Delete action response:", response);
+
+    if (response.success) setConfirmDelete(false);
   };
 
   console.log("Main Contact ID: ", staffId);
@@ -172,7 +179,7 @@ export default function StudentManager({
               <div className="flex justify-center space-x-4">
                 <div>
                   <button
-                    onClick={handleDeleteStudent}
+                    onClick={() => handleDeleteStudent(selectedStudent)}
                     className="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded"
                   >
                     Delete Student

@@ -2,7 +2,7 @@
 
 import { neon } from "@neondatabase/serverless";
 
-export async function deleteStudent(memberNumber) {
+export async function deleteStudent(memberNumber: string) {
   if (!process.env.DATABASE_URL) {
     throw new Error("DATABASE_URL not set");
   }
