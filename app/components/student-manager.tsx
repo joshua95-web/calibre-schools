@@ -55,6 +55,7 @@ export default function StudentManager({
 
   const [studentList, setStudentList] = useState<studentList[]>([]);
   const [loading, setLoading] = useState(true);
+  const [studentRefreshTrigger, setStudentRefreshTrigger] = useState(false);
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -69,7 +70,7 @@ export default function StudentManager({
     };
 
     fetchStudents();
-  }, [schoolId, teacherMemberId]);
+  }, [schoolId, teacherMemberId, studentRefreshTrigger]);
 
   const handleDateChange = (date: Dayjs | null) => {
     if (date) {
@@ -101,7 +102,6 @@ export default function StudentManager({
 
     try {
       await addStudent(staffId, schoolId, formData);
-      console.log("Student added successfully");
 
       setFormData({
         ...formData,
@@ -110,7 +110,7 @@ export default function StudentManager({
         student_date_of_birth: "",
       });
 
-      console.log("formData has been cleared");
+      setStudentRefreshTrigger((prev) => !prev);
     } catch (error: unknown) {
       return { ok: false, error: error as Error };
     }
@@ -148,7 +148,10 @@ export default function StudentManager({
     const response = await deleteStudent(memberNumber);
     console.log("Delete action response:", response);
 
-    if (response.success) setConfirmDelete(false);
+    if (response.success) {
+      setConfirmDelete(false);
+      setStudentRefreshTrigger((prev) => !prev);
+    }
   };
 
   console.log("Main Contact ID: ", staffId);
